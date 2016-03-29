@@ -40,7 +40,7 @@
 	{name: "Jeff Gerber",
 	 exp: 2,
 	 pairedWith: []},
-	 {name: "Rick Patsi",
+	 {name: "Rick Patci",
 	 exp: 2,
 	 pairedWith: []},
 	 {name: "Brian Nations",
