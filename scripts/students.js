@@ -53,7 +53,7 @@
 	 exp: 3,
 	 pairedWith: []}
 	];
-
+	sortedArray = [];
 	pairsArray = [];
 // TODO: 1. check if experience is a 1 to create a new array
 	function hasLowExp(student) {
@@ -72,6 +72,40 @@
 	function bothLowExp(student1, student2){
 		return (student1.exp === 1)  && (student2.exp === 1)
 	};
+
+	function lessFilter(val){
+		return val.exp === 1;
+	};
+
+	function moreFilter(val){
+		return val.exp != 1;
+	};
+
+	function randomizer(arr){
+		var current = arr.length,
+		    temp,
+		    random;
+		while (current != 0){
+			random = Math.floor(Math.random() * current);
+			current--;
+			temp = arr[current];
+			arr[current] = arr[random];
+      arr[random] = temp;
+		}
+	  return arr;
+	};
+
+	Student.sorted = function(arr){
+		var less = arr.filter(lessFilter);
+		var more = arr.filter(moreFilter);
+		var randomMore = randomizer(more);
+		for (var i = 0; i < randomMore.length; i++){
+		  less.push(randomMore[i]);
+	  };
+		console.log (less);
+		return less;
+	};
+
 
 	function Student(args){
 		Object.keys(args).forEach(function(k){
