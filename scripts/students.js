@@ -61,6 +61,10 @@
 		return student.exp > 1;
 	}
 
+    function hasPairedWith(student1, student2){
+		return student1.pairedWith.indexOf(student2.name);
+	}
+
 	function Student(args){
 		Object.keys(args).forEach(function(k){
     	  this[k] = args[k];
