@@ -65,6 +65,10 @@
 		return student1.pairedWith.indexOf(student2.name);
 	}
 
+	function bothLowExp(student1, student2){
+		return (student1.exp === 1)  && (student2.exp === 1)
+	};
+
 	function Student(args){
 		Object.keys(args).forEach(function(k){
     	  this[k] = args[k];
