@@ -33,7 +33,7 @@
 		if yes, clear everyone's previousPairs (everyone has been matched with everyone)
 */
 
-	var students = [
+	students = [
 	{name: "Amy Leek",
 	 exp: 2,
 	 pairedWith: []},
@@ -62,7 +62,9 @@
 	}
 
 	function Student(args){
-
+		Object.keys(args).forEach(function(k){
+    	  this[k] = args[k];
+    	},this);
 	}
 
 	Student.createNew = function(){
