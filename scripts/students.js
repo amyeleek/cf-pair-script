@@ -21,6 +21,9 @@
 	//the array of pairs. Is an array of arrays
 	pairs = [];
 
+	//length of the array of less experienced students
+	var lessLen = 0;
+
 	// TODO: 1. check if experience is a 1 to create a new array
 	function hasLowExp(student) {
   	return student.exp === 1;
@@ -82,6 +85,13 @@
     	}
 	};
 
+	/*check if the person at the head of the sorted array (known to be a less experienced student)
+	  has a number of previous partners equal to everyone else in class minus the other less experienced students
+	  returns true if we have exceeded the number of pairs we can make, which means we need to call clearPairedWith*/
+	function checkPairedWith(arr){
+		return (arr[0].pairedWith.length >= students.length - 1 - lesslen)
+	}
+
 	function clearPairedWith(){
 		students.forEach(function(student){
 			student.pairedWith = [];
@@ -108,6 +118,7 @@
 	}
 
 	//fetch students from persistant storage
+	//does not pull from JSON if the JSON has been updated
 	Student.fetchStudents = function(){
 		if(localStorage.students){
 			loadStudents(JSON.parse(localStorage.students));
@@ -121,12 +132,12 @@
 
 	Student.sorted = function(arr){
 		var less = arr.filter(lessFilter);
+		lessLen = less.length;
 		var more = arr.filter(moreFilter);
 		var randomMore = randomizer(more);
 		for (var i = 0; i < randomMore.length; i++){
 		  less.push(randomMore[i]);
 	  };
-		console.log (less);
 		return less;
 	};
 
