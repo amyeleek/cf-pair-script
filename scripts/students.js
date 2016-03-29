@@ -41,10 +41,10 @@
 	 exp: 2,
 	 pairedWith: []},
 	 {name: "Rick Patci",
-	 exp: 2,
+	 exp: 1,
 	 pairedWith: []},
 	 {name: "Brian Nations",
-	 exp: 2,
+	 exp: 1,
 	 pairedWith: []}
 	];
 
