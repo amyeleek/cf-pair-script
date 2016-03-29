@@ -67,7 +67,11 @@
 	}
 
 	//load students into memory
-	function loadStudents(student){};
+	function loadStudents(data){
+		data.forEach(function(student){
+			students.push(new Student(student));
+		});
+	};
 
 	function Student(args){
 		Object.keys(args).forEach(function(k){
@@ -76,7 +80,16 @@
 	}
 
 	//fetch students from persistant storage
-	Student.fetchStudents = function(){};
+	Student.fetchStudents = function(){
+		if(localStorage.students){
+			loadStudents(JSON.parse(localStorage.students));
+		}else{
+			$.getJSON('/data/students.json', function(data){
+				localStorage.students = JSON.stringify(data);
+				loadStudents(data);
+			})
+		}
+	};
 
 	//run through any passed-in array and create pairs out of it
 	Student.createPairs = function(arr){
@@ -95,12 +108,15 @@
 
 		//take the first student in the array. Loop over the array until we find someone to pair with
 		for(var i = 1; i<arr.length; i++) {
+
 			if (bothLowExp(arr[0], arr[i])) continue;
 			if (hasPairedWith(arr[0], arr[i])) continue;
+
 			pairs.push([arr[0], arr[i]]);
 			updatePairedWith(arr[0], arr[i]);
 			break;
 		}
+		
 		//when we make one pair, splice that pair out of the array and recurse
 		Student.createPairs(splicedArray(arr, i));
 	}
