@@ -36,23 +36,33 @@
 	var students = [
 	{name: "Amy Leek",
 	 exp: 2,
+	 driver: false,
+	 driverCount: 0,
 	 pairedWith: []},
 	{name: "Jeff Gerber",
 	 exp: 2,
+	 driver: false,
+	 driverCount: 0,
 	 pairedWith: []},
 	 {name: "Rick Patci",
 	 exp: 1,
+	 driver: false,
+	 driverCount: 0,
 	 pairedWith: []},
 	 {name: "Brian Nations",
 	 exp: 1,
+	 driver: false,
+	 driverCount: 0,
 	 pairedWith: []},
 	 {name: "Alex Reid",
 	 exp: 3,
+	 driver: false,
+	 driverCount: 0,
 	 pairedWith: []}
 	];
 
 // TODO: 1. check if experience is a 1 to create a new array
-	function hasLowExp(student) {
+	function hasLowerExp(student) {
   	return student.exp === 1;
 	}
 
