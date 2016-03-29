@@ -68,10 +68,15 @@
 		return arr;
 	};
 
-	//update the pairedWith array for two students TODO: Make a way for it to work with three
-	function updatePairedWith(student1, student2){
+	//update the pairedWith array for two or three students
+	function updatePairedWith(student1, student2, student3){
     	student1.pairedWith.push(student2.name);
     	student2.pairedWith.push(student1.name);
+    	if(student3){
+    		student1.pairedWith.push(student3.name);
+    		student2.pairedWith.push(student3.name);
+    		student3.pairedWith.push(student1.name, student2.name);
+    	}
 	};
 
 	//load students into memory
@@ -90,7 +95,14 @@
 	Student.createPairs = function(arr){
 		//if the array has three or less items, we can't create any more pairs
 		if (arr.length <= 3) {
-			pairsArray.push(arr);
+			pairs.push(arr);
+			//update pairedWith depending on how many we have left
+			if(arr.length == 3){
+				updatePairedWith(arr[0], arr[1], arr[2]);
+			}else{
+				updatePairedWith(arr[0], arr[1]);
+			}
+
 			return true;
 		}
 
@@ -98,7 +110,7 @@
 		for(var i = 1; i<arr.length; i++) {
 			if (bothLowExp(arr[0], arr[i])) continue;
 			if (hasPairedWith(arr[0], arr[i])) continue;
-			pairsArray.push([arr[0], arr[i]]);
+			pairs.push([arr[0], arr[i]]);
 			updatePairedWith(arr[0], arr[i]);
 			break;
 		}
@@ -108,3 +120,6 @@
 
 	module.Student = Student;
 })(window)
+
+//for students not exp of 1: max pairs is length of students array - 1
+//for students with exp of 1, it's length of 2+3 students - 1
