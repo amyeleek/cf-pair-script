@@ -34,10 +34,10 @@
 */
 
 	students = [
-	{name: "Amy Leek",
+	 {name: "Amy Leek",
 	 exp: 2,
 	 pairedWith: []},
-	{name: "Jeff Gerber",
+	 {name: "Jeff Gerber",
 	 exp: 2,
 	 pairedWith: []},
 	 {name: "Rick Patci",
@@ -48,9 +48,13 @@
 	 pairedWith: []},
 	 {name: "Alex Reid",
 	 exp: 3,
+	 pairedWith: []},
+	 {name: "Brook Riggio",
+	 exp: 3,
 	 pairedWith: []}
 	];
 
+	pairsArray = [];
 // TODO: 1. check if experience is a 1 to create a new array
 	function hasLowExp(student) {
   	return student.exp === 1;
@@ -61,8 +65,8 @@
 		return student.exp > 1;
 	}
 
-    function hasPairedWith(student1, student2){
-		return student1.pairedWith.indexOf(student2.name);
+  function hasPairedWith(student1, student2){
+		return (student1.pairedWith.indexOf(student2.name) > 1);
 	}
 
 	function bothLowExp(student1, student2){
@@ -77,7 +81,36 @@
 
 	Student.createNew = function(){
 
+
 	};
+
+	function splicedArray(arr, s2){
+		arr.splice(s2, 1);
+		arr.shift();
+		return arr;
+
+	};
+
+	function updatePairedWith(s1, s2){
+    s1.pairedWith.push(s2.name);
+    s2.pairedWith.push(s1.name);
+	};
+
+	Student.createPairs = function(arr){
+		if (arr.length <= 3) {
+			pairsArray.push(arr);
+			return true;
+		}
+
+		for(var i = 1; i<arr.length; i++) {
+			if (bothLowExp(arr[0], arr[i])) continue;
+			if (hasPairedWith(arr[0], arr[i])) continue;
+			pairsArray.push([arr[0], arr[i]]);
+			updatePairedWith(arr[0], arr[i]);
+			break;
+		}
+		Student.createPairs(splicedArray(arr, i));
+	}
 
 	module.Student = Student;
 })(window)
