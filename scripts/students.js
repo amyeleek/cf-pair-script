@@ -51,6 +51,16 @@
 	 pairedWith: []}
 	];
 
+// TODO: 1. check if experience is a 1 to create a new array
+	function hasLowExp(student) {
+  	return student.exp === 1;
+	}
+
+// TODO: 2. check for higher exp to create second array
+	function hasHigherExp(student) {
+		return student.exp > 1;
+	}
+
 	function Student(args){
 
 	}
