@@ -41,6 +41,28 @@
 		return (student1.exp === 1)  && (student2.exp === 1)
 	};
 
+	function lessFilter(val){
+		return val.exp === 1;
+	};
+
+	function moreFilter(val){
+		return val.exp != 1;
+	};
+
+	function randomizer(arr){
+		var current = arr.length,
+		    temp,
+		    random;
+		while (current != 0){
+			random = Math.floor(Math.random() * current);
+			current--;
+			temp = arr[current];
+			arr[current] = arr[random];
+      arr[random] = temp;
+		}
+	  return arr;
+	};
+
 	//takes two items out of an array and returns the modified array. 
 	//We only pass in one index because the other pair will always be the first element of the array
 	function splicedArray(arr, i){
@@ -95,6 +117,17 @@
 				loadStudents(data);
 			})
 		}
+	};
+
+	Student.sorted = function(arr){
+		var less = arr.filter(lessFilter);
+		var more = arr.filter(moreFilter);
+		var randomMore = randomizer(more);
+		for (var i = 0; i < randomMore.length; i++){
+		  less.push(randomMore[i]);
+	  };
+		console.log (less);
+		return less;
 	};
 
 	//run through any passed-in array and create pairs out of it
