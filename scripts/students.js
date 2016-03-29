@@ -79,6 +79,12 @@
     	}
 	};
 
+	function clearPairedWith(){
+		students.forEach(function(student){
+			student.pairedWith = [];
+		});
+	}
+
 	//load students into memory
 	function loadStudents(student){};
 
