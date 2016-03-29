@@ -73,6 +73,12 @@
 		});
 	};
 
+	//flatten the pairs array and store it, so we keep the pairedWith values
+	function storeStudents(){
+		var flat = [].concat.apply([], pairs);
+		localStorage.students = JSON.stringify(flat);
+	}
+
 	function Student(args){
 		Object.keys(args).forEach(function(k){
     	  this[k] = args[k];
@@ -116,7 +122,7 @@
 			updatePairedWith(arr[0], arr[i]);
 			break;
 		}
-		
+
 		//when we make one pair, splice that pair out of the array and recurse
 		Student.createPairs(splicedArray(arr, i));
 	}
