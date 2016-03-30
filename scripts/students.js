@@ -41,6 +41,11 @@
 		return 0;
 	}
 
+	function byDriver(a, b) {
+		if (a.driverCount > b.driverCount) return 1;
+		if (a.driverCount < b.driverCount) return -1;
+		return 0;
+	}
 	// TODO: 4. If the driver booleans are different, swap them.
 						//If the driver booleans are the same, lower driverCount becomes driver
 
@@ -95,7 +100,7 @@
     	}
 	};
 
-	/*check if the person at the head of the sorted array (known to be a less experienced student)
+	/*check if the person at the head of the sorted students array (known to be a less experienced student)
 	  has a number of previous partners equal to everyone else in class minus the other less experienced students
 	  returns true if we have exceeded the number of pairs we can make, which means we need to call clearPairedWith*/
 	function checkPairedWith(arr){
@@ -108,33 +113,17 @@
 		});
 	}
 
+	//sort by driverCount, whoever ends up in front wins. Yay!
 	function designateDriver(arr){
-		if(arr[0].driver != arr[1].driver){
-			toggleDriver(arr[0]);
-			toggleDriver(arr[1]);
-			(arr[0].driver == true) ? updateDriverCount(arr[0]) : updateDriverCount(arr[1]);
-			return arr;
-		}else{
-			if(arr[0].driverCount < arr[1].driverCount){
-				arr[0].driver = true;
-				arr[1].driver = false;
-				updateDriverCount(arr[0]);
-			}else{
-				arr[0].driver = false;
-				arr[1].driver = true;
-				updateDriverCount(arr[1]);
-			}
-
-			return arr;
-		}
+		arr.sort(byDriver);
+		updateDriver(arr[0]);
 	}
 
-	function toggleDriver(student){
-		return (student.driver == true) ? student.driver = false : student.driver = true;
-	}
+	function updateDriver(student){
+		student.driver = true;
+		student.driverCount++;
 
-	function updateDriverCount(student){
-		return student.driverCount++;
+		return student;
 	}
 
 	//load students into memory
