@@ -41,6 +41,9 @@
 		return 0;
 	}
 
+	// TODO: 4. If the driver booleans are different, swap them.
+						//If the driver booleans are the same, lower driverCount becomes driver
+
 	//Returns true if a student has paired with another before
     function hasPairedWith(student1, student2){
 		return (student1.pairedWith.indexOf(student2.name) > 1);
