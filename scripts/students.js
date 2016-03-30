@@ -10,9 +10,16 @@
 
 	Need persistant storage on this app
 
-	clearPairs
-		On each run (before or after?), first check if previousPairs array is one less than the total students array
-		if yes, clear everyone's previousPairs (everyone has been matched with everyone)
+
+	Program flow:
+
+	 fetchStudents() - gets students from storage, loads them into the students array
+	 randomizer(students) - puts the less experienced students first, randomizes the rest
+	 checkPairedWith, clearPairedWith() if checkPairedWith returns true - checks if we're hitting the limit on pairs
+	 createPairs(students) - mangles the students array, fills the pairs array
+	pairs.forEach, designateDriver(pair) - sets up the drivers
+	 storeStudents() - stores students back in storage, with updated pairedWith and driver status
+	 fethcStudents() - fill out the students array again with new data
 */
 
 	//full array of students. TODO: Load from persistant storage
