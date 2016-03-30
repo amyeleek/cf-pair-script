@@ -32,6 +32,13 @@
 		return student.exp > 1;
 	}
 
+	// Sorts the class array based on experience level, ascending
+	function classSort(a, b) {
+		if (a.exp > b.exp) return 1;
+		if (a.exp < b.exp) return -1;
+		return 0;
+	}
+
 	//Returns true if a student has paired with another before
     function hasPairedWith(student1, student2){
 		return (student1.pairedWith.indexOf(student2.name) > 1);
