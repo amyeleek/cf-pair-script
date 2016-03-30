@@ -89,7 +89,7 @@
 	  has a number of previous partners equal to everyone else in class minus the other less experienced students
 	  returns true if we have exceeded the number of pairs we can make, which means we need to call clearPairedWith*/
 	function checkPairedWith(arr){
-		return (arr[0].pairedWith.length >= students.length - 1 - lesslen)
+		return (arr[0].pairedWith.length >= students.length - lesslen)
 	}
 
 	function clearPairedWith(){
@@ -173,6 +173,3 @@
 
 	module.Student = Student;
 })(window)
-
-//for students not exp of 1: max pairs is length of students array - 1
-//for students with exp of 1, it's length of 2+3 students - 1
