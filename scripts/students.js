@@ -108,6 +108,35 @@
 		});
 	}
 
+	function designateDriver(arr){
+		if(arr[0].driver != arr[1].driver){
+			toggleDriver(arr[0]);
+			toggleDriver(arr[1]);
+			(arr[0].driver == true) ? updateDriverCount(arr[0]) : updateDriverCount(arr[1]);
+			return arr;
+		}else{
+			if(arr[0].driverCount < arr[1].driverCount){
+				arr[0].driver = true;
+				arr[1].driver = false;
+				updateDriverCount(arr[0]);
+			}else{
+				arr[0].driver = false;
+				arr[1].driver = true;
+				updateDriverCount(arr[1]);
+			}
+
+			return arr;
+		}
+	}
+
+	function toggleDriver(student){
+		return (student.driver == true) ? student.driver = false : student.driver = true;
+	}
+
+	function updateDriverCount(student){
+		return student.driverCount++;
+	}
+
 	//load students into memory
 	function loadStudents(data){
 		data.forEach(function(student){
@@ -182,6 +211,6 @@
 	}
 
 	module.Student = Student;
-	
+
 })(window)
 
