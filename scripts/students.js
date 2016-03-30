@@ -24,14 +24,21 @@
 	//length of the array of less experienced students
 	var lessLen = 0;
 
-	// TODO: 1. check if experience is a 1 to create a new array
+	// TODO: 1. Check if experience is a 1 to create a new array
 	function hasLowExp(student) {
   	return student.exp === 1;
 	}
 
-	// TODO: 2. check for higher exp to create second array
+	// TODO: 2. Check for higher exp to create second array
 	function hasHigherExp(student) {
 		return student.exp > 1;
+	}
+
+	// TODO: 3. Sort the class array based on experience level, ascending
+	function byExp(a, b) {
+		if (a.exp > b.exp) return 1;
+		if (a.exp < b.exp) return -1;
+		return 0;
 	}
 
 	//Returns true if a student has paired with another before
@@ -66,7 +73,7 @@
 	  return arr;
 	};
 
-	//takes two items out of an array and returns the modified array. 
+	//takes two items out of an array and returns the modified array.
 	//We only pass in one index because the other pair will always be the first element of the array
 	function splicedArray(arr, i){
 		arr.splice(i, 1);
