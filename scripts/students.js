@@ -14,8 +14,8 @@
 	Program flow:
 
 	 fetchStudents() - gets students from storage, loads them into the students array
-	 randomizer(students) - puts the less experienced students first, randomizes the rest
-	 checkPairedWith, clearPairedWith() if checkPairedWith returns true - checks if we're hitting the limit on pairs
+	 sorted(students) - puts the less experienced students first, randomizes the rest
+	 overPairedWith - checks if we're hitting the limit on pairs
 	 createPairs(students) - mangles the students array, fills the pairs array
 	pairs.forEach, designateDriver(pair) - sets up the drivers
 	 storeStudents() - stores students back in storage, with updated pairedWith and driver status
@@ -120,12 +120,6 @@
 		});
 	}
 
-	//sort by driverCount, whoever ends up in front wins. Yay!
-	function designateDriver(arr){
-		arr.sort(byDriver);
-		updateDriver(arr[0]);
-	}
-
 	function updateDriver(student){
 		student.driver = true;
 		student.driverCount++;
@@ -178,6 +172,17 @@
 	  };
 		return less;
 	};
+
+	//sort by driverCount, whoever ends up in front wins. Yay!
+	Student.designateDriver = function(arr){
+		arr.sort(byDriver);
+		updateDriver(arr[0]);
+	}
+
+	Student.overPairedWith = function(){
+		if(checkPairedWith(students)) clearPairedWith();
+	}
+
 
 	//run through any passed-in array and create pairs out of it
 	Student.createPairs = function(arr){
