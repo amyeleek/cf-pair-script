@@ -51,7 +51,7 @@
 
 	//Returns true if a student has paired with another before
     function hasPairedWith(student1, student2){
-		return (student1.pairedWith.indexOf(student2.name) > 1);
+		return (student1.pairedWith.indexOf(student2.name) > -1);
 	}
 
 	//returns true if both students are low experience
@@ -134,10 +134,6 @@
 	};
 
 	//flatten the pairs array and store it, so we keep the pairedWith values
-	function storeStudents(){
-		var flat = [].concat.apply([], pairs);
-		localStorage.students = JSON.stringify(flat);
-	}
 
 	function Student(args){
 		Object.keys(args).forEach(function(k){
@@ -148,6 +144,8 @@
 	//fetch students from persistant storage
 	//does not pull from JSON if the JSON has been updated
 	Student.fetchStudents = function(){
+		students = [];
+
 		if(localStorage.students){
 			loadStudents(JSON.parse(localStorage.students));
 		}else{
@@ -157,6 +155,11 @@
 			})
 		}
 	};
+
+	Student.storeStudents =function(){
+		var flat = [].concat.apply([], pairs);
+		localStorage.students = JSON.stringify(flat);
+	}
 
 	Student.sorted = function(arr){
 		var less = arr.filter(lessFilter);
