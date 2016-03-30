@@ -1,7 +1,7 @@
 [{
 	"name": "Amy Leek",
 	"exp": 2,
-	"driver": true,
+	"driver": false,
 	"driverCount": 0,
 	"pairedWith": []
 },
