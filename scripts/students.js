@@ -89,24 +89,24 @@
 
 	//update the pairedWith array for two or three students
 	function updatePairedWith(student1, student2, student3){
-  	student1.pairedWith.push(student2.name);
-  	student2.pairedWith.push(student1.name);
-  	if(student3){
-  		student1.pairedWith.push(student3.name);
-  		student2.pairedWith.push(student3.name);
-  		student3.pairedWith.push(student1.name, student2.name);
-  	}
+	  	student1.pairedWith.push(student2.name);
+	  	student2.pairedWith.push(student1.name);
+	  	if(student3){
+	  		student1.pairedWith.push(student3.name);
+	  		student2.pairedWith.push(student3.name);
+	  		student3.pairedWith.push(student1.name, student2.name);
+	  	}
 	};
 
 	/*check if the person at the head of the sorted students array (known to be a less experienced student)
 	  has a number of previous partners equal to everyone else in class minus the other less experienced students
 	  returns true if we have exceeded the number of pairs we can make, which means we need to call clearPairedWith*/
-	function checkPairedWith(arr){
-		return (arr[0].pairedWith.length >= students.length - lesslen)
+	function checkPairedWith(student){
+		return (student.pairedWith.length >= students.length - lessLen)
 	}
 
-	function clearPairedWith(){
-		students.forEach(function(student){
+	function clearPairedWith(arr){
+		arr.forEach(function(student){
 			student.pairedWith = [];
 		});
 	}
@@ -116,6 +116,10 @@
 		student.driverCount++;
 
 		return student;
+	}
+
+	function updateNavigator(student){
+		return student.driver = false;
 	}
 
 	//load students into memory
@@ -135,15 +139,17 @@
 
 	//fetch students from persistant storage
 	//does not pull from JSON if the JSON has been updated
-	Student.fetchStudents = function(){
+	Student.fetchStudents = function(callback){
 		students = [];
 
 		if(localStorage.students){
 			loadStudents(JSON.parse(localStorage.students));
+			if(callback) callback();
 		}else{
 			$.getJSON('/data/students.json', function(data){
 				localStorage.students = JSON.stringify(data);
 				loadStudents(data);
+				if(callback) callback();
 			})
 		}
 	};
@@ -164,20 +170,25 @@
 		return less;
 	};
 
-	//sort by driverCount, whoever ends up in front wins. Yay!
+	//sort by driverCount, whoever ends up in front wins.
 	Student.designateDriver = function(arr){
 		arr.sort(byDriver);
+
 		updateDriver(arr[0]);
+
+		updateNavigator(arr[1]);
+		if(arr[2]) updateNavigator(arr[2]);
 	}
 
-	Student.overPairedWith = function(){
-		if(checkPairedWith(students)) clearPairedWith();
+	Student.overPairedWith = function(arr){
+		if(checkPairedWith(arr[0])) clearPairedWith(arr);
 	}
 
 
 	//run through any passed-in array and create pairs out of it
 	Student.createPairs = function(arr){
 		//if the array has three or less items, we can't create any more pairs
+		//TODO: check if these folks are unmatchable and if we need to rerun the algorithm
 		if (arr.length <= 3) {
 			pairs.push(arr);
 			//update pairedWith depending on how many we have left
@@ -203,6 +214,27 @@
 
 		//when we make one pair, splice that pair out of the array and recurse
 		Student.createPairs(splicedArray(arr, i));
+	}
+
+	Student.kickoff = function(){
+		Student.fetchStudents(Student.main);
+	}
+
+	Student.main = function(callback){
+		var sortedStudents = Student.sorted(students);
+		Student.overPairedWith(sortedStudents);
+		Student.createPairs(sortedStudents);
+
+		pairs.forEach(function(pair){
+			Student.designateDriver(pair);
+		});
+
+		console.log(pairs);
+
+		Student.storeStudents();
+		pairs = [];
+
+		if(callback) callback();
 	}
 
 	module.Student = Student;
