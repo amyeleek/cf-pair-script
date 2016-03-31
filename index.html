@@ -8,11 +8,13 @@
   <body>
   	<main>
   	    <script id="pair-template" type="text/x-handlebars-template">
-        	<td>{{driver}}</td>
-            <td>{{navigator}}</td>
-            {{#if navigator2}}
-            	<td>{{navigator2}}</td>
-            {{/if}}
+  	   		<tr class="pair">
+	        	<td>{{driver}}</td>
+	            <td>{{navigator}}</td>
+	            {{#if navigator2}}
+	            	<td>{{navigator2}}</td>
+	            {{/if}}
+            </tr>
       	</script>
   		<section id="results">
         <table>
@@ -21,8 +23,6 @@
         	    <th>Navigator</th>
         	    <th>Navigator 2</th>
         	 </thead>
-        	 <tr>
-        	 </tr>
         </table>
         <button name="pairs">Create Pairs</button>
   		</section>

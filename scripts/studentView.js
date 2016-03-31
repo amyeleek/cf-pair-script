@@ -5,12 +5,14 @@
 	//clears out old pairs if they're there
 	studentView.buttonHandler = function(){
 		$('button').on('click', function(e){
-			Student.kickoff(studentView.showPairs);
+			if($('.pair')) $('.pair').remove();
+			Student.kickoff();
 		});
 	}
 
-	studentView.showPairs = function(){
-		$('#results').append('Hello world!');
+	studentView.showPairs = function(pair){
+		var template = Handlebars.compile($('#pair-template').text());
+		$('#results table').append(template(pair));
 	}
 
 	module.studentView = studentView;

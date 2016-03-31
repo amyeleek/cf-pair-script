@@ -216,6 +216,19 @@
 
 		pairs.forEach(function(pair){
 			Student.designateDriver(pair);
+
+			if(pair[2]){
+				var pairLiteral = {driver: pair[0].name,
+						   		   navigator: pair[1].name,
+						           navigator2: pair[2].name 
+						   		  };
+			}else{
+				var pairLiteral = {driver: pair[0].name,
+						   	   	   navigator: pair[1].name
+						      	  };
+			}
+
+			studentView.showPairs(pairLiteral);
 		});
 
 		console.log(pairs);
