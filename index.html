@@ -7,24 +7,29 @@
   </head>
   <body>
   	<main>
-  		<section id="entry">
-  		 <form action="#" id="new-student">
-            <label>
-              <span class="grid-3">Name:</span>
-              <input type="text" name="name" placeholder="Student Name" required>
-            </label>
-            <label>
-              <span class="grid-3">Experience:</span>
-              <select name="experience" required>
-              	<option value="1">Low</option> 
-              	<option value="2">Medium</option> 
-              	<option value="3">High</option> 
-              </select>
-            </label>
-          </form>
-  		</section>
+  	    <script id="pair-template" type="text/x-handlebars-template">
+  	   		<tr class="pair">
+	        	<td>{{driver}}</td>
+	            <td>{{navigator}}</td>
+	            {{#if navigator2}}
+	            	<td>{{navigator2}}</td>
+	            {{/if}}
+            </tr>
+      	</script>
   		<section id="results">
+        <table>
+        	<thead>
+        	    <th>Driver</th>
+        	    <th>Navigator</th>
+        	    <th>Navigator 2</th>
+        	 </thead>
+        </table>
+        <button name="pairs">Create Pairs</button>
   		</section>
+  		<script src="https://code.jquery.com/jquery-2.2.2.min.js"></script>
+  		<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.js"></script>
+  		<script src="/scripts/students.js"></script>
+  		<script src="/scripts/studentView.js"></script>
   	</main>
   </body>
  </html>
