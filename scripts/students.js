@@ -31,16 +31,6 @@
 	//length of the array of less experienced students
 	var lessLen = 0;
 
-	// TODO: 1. Check if experience is a 1 to create a new array
-	function hasLowExp(student) {
-  	return student.exp === 1;
-	}
-
-	// TODO: 2. Check for higher exp to create second array
-	function hasHigherExp(student) {
-		return student.exp > 1;
-	}
-
 	// TODO: 3. Sort the class array based on experience level, ascending
 	function byExp(a, b) {
 		if (a.exp > b.exp) return 1;
@@ -74,19 +64,20 @@
 		return val.exp != 1;
 	};
 
+  //Takes an array. Returns an array with the same items in random order.
 	function randomizer(arr){
 		var current = arr.length,
 		    temp,
 		    random;
 		while (current != 0){
-			random = Math.floor(Math.random() * current);
-			current--;
-			temp = arr[current];
-			arr[current] = arr[random];
+      random = Math.floor(Math.random() * current);
+      current--;
+      temp = arr[current];
+      arr[current] = arr[random];
       arr[random] = temp;
-		}
-	  return arr;
-	};
+    }
+    return arr;
+  };
 
 	//takes two items out of an array and returns the modified array.
 	//We only pass in one index because the other pair will always be the first element of the array
@@ -98,13 +89,13 @@
 
 	//update the pairedWith array for two or three students
 	function updatePairedWith(student1, student2, student3){
-    	student1.pairedWith.push(student2.name);
-    	student2.pairedWith.push(student1.name);
-    	if(student3){
-    		student1.pairedWith.push(student3.name);
-    		student2.pairedWith.push(student3.name);
-    		student3.pairedWith.push(student1.name, student2.name);
-    	}
+  	student1.pairedWith.push(student2.name);
+  	student2.pairedWith.push(student1.name);
+  	if(student3){
+  		student1.pairedWith.push(student3.name);
+  		student2.pairedWith.push(student3.name);
+  		student3.pairedWith.push(student1.name, student2.name);
+  	}
 	};
 
 	/*check if the person at the head of the sorted students array (known to be a less experienced student)
@@ -138,8 +129,8 @@
 
 	function Student(args){
 		Object.keys(args).forEach(function(k){
-    	  this[k] = args[k];
-    	},this);
+  	  this[k] = args[k];
+  	},this);
 	}
 
 	//fetch students from persistant storage
