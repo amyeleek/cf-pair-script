@@ -14,22 +14,6 @@
             	<td>{{navigator2}}</td>
             {{/if}}
       	</script>
-  		<section id="entry">
-  		  <form action="#" id="new-student">
-          <label>
-            <span class="grid-3">Name:</span>
-            <input type="text" name="name" placeholder="Student Name" required>
-          </label>
-          <label>
-            <span class="grid-3">Experience:</span>
-            <select name="experience" required>
-            	<option value="1">Low</option>
-            	<option value="2">Medium</option>
-            	<option value="3">High</option>
-            </select>
-          </label>
-        </form>
-  		</section>
   		<section id="results">
         <table>
         	<thead>
@@ -40,10 +24,12 @@
         	 <tr>
         	 </tr>
         </table>
+        <button name="pairs">Create Pairs</button>
   		</section>
   		<script src="https://code.jquery.com/jquery-2.2.2.min.js"></script>
   		<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.js"></script>
   		<script src="/scripts/students.js"></script>
+  		<script src="/scripts/studentView.js"></script>
   	</main>
   </body>
  </html>

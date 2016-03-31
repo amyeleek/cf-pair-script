@@ -9,20 +9,9 @@
 	});
 
 	Need persistant storage on this app
-
-
-	Program flow:
-
-	 fetchStudents() - gets students from storage, loads them into the students array
-	 sorted(students) - puts the less experienced students first, randomizes the rest
-	 overPairedWith - checks if we're hitting the limit on pairs
-	 createPairs(students) - mangles the students array, fills the pairs array
-	pairs.forEach, designateDriver(pair) - sets up the drivers
-	 storeStudents() - stores students back in storage, with updated pairedWith and driver status
-	 fethcStudents() - fill out the students array again with new data
 */
 
-	//full array of students. TODO: Load from persistant storage
+	//full array of students.
 	students = []
 
 	//the array of pairs. Is an array of arrays
@@ -139,17 +128,17 @@
 
 	//fetch students from persistant storage
 	//does not pull from JSON if the JSON has been updated
-	Student.fetchStudents = function(callback){
+	Student.fetchStudents = function(callback, callback2){
 		students = [];
 
 		if(localStorage.students){
 			loadStudents(JSON.parse(localStorage.students));
-			if(callback) callback();
+			if(callback) callback(callback2);
 		}else{
 			$.getJSON('/data/students.json', function(data){
 				localStorage.students = JSON.stringify(data);
 				loadStudents(data);
-				if(callback) callback();
+				if(callback) callback(callback2);
 			})
 		}
 	};
@@ -216,8 +205,8 @@
 		Student.createPairs(splicedArray(arr, i));
 	}
 
-	Student.kickoff = function(){
-		Student.fetchStudents(Student.main);
+	Student.kickoff = function(callback){
+		Student.fetchStudents(Student.main, callback);
 	}
 
 	Student.main = function(callback){
