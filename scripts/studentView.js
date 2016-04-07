@@ -15,5 +15,7 @@
 		$('#results table').append(template(pair));
 	}
 
+	$(document).ready(studentView.buttonHandler());
+
 	module.studentView = studentView;
 })(window)
