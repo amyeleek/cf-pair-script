@@ -17,7 +17,13 @@
             </tr>
       	</script>
       	<script id="student-template" type="text/x-handlebars-template">
-	        	<li>Name: {{name}}, Experience: {{exp}}, Driver count: {{driverCount}}, Previously paired with: {{pairedWith}}</li>
+	        	<li data-name="{{name}}">Name: {{name}}, Experience: {{exp}}. Change exp: 
+	        	<select>		
+	        	 	<option>1</option>
+	        	 	<option>2</option>
+	        	 	<option>3</option>
+	        	</select> <button id="exp">Update</button>
+	        	Driver count: {{driverCount}}, Previously paired with: {{pairedWith}}</li>
       	</script>
   		<section id="results">
         <table>
@@ -27,7 +33,7 @@
         	    <th>Navigator 2</th>
         	 </thead>
         </table>
-        <button name="pairs">Create Pairs</button>
+        <button id="pairs">Create Pairs</button>
   		</section>
   		<section>
   			<h4>Students</h4>

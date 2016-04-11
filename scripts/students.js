@@ -209,6 +209,11 @@
 		Student.createPairs(splicedArray(arr, i));
 	}
 
+	Student.updateExp = function(name, val){
+		
+	}
+
+	//Student.kickoff(studentView.init)
 	Student.kickoff = function(callback){
 		Student.fetchStudents(Student.main, callback);
 	}
