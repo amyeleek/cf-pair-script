@@ -153,9 +153,9 @@
 		lessLen = less.length;
 		var more = arr.filter(moreFilter);
 		var randomMore = randomizer(more);
-		for (var i = 0; i < randomMore.length; i++){
-		  less.push(randomMore[i]);
-	  };
+		randomMore.forEach(function(student){
+			less.push(student);
+		});
 		return less;
 	};
 
@@ -191,6 +191,10 @@
 		}
 
 		//take the first student in the array. Loop over the array until we find someone to pair with
+		//BUG: If there's an array where a person has paired with everyone 
+		//left in the array (and is therefore unpairable), the loop will exit with i at the 
+		//array.length and call splicedArray with i of the length of the array. Then splice() 
+		//does nothing and we lose someone from the beginning of the array.
 		for(var i = 1; i<arr.length; i++) {
 
 			if (bothLowExp(arr[0], arr[i])) continue;
@@ -205,11 +209,30 @@
 		Student.createPairs(splicedArray(arr, i));
 	}
 
+	Student.updateExp = function(name, val){
+		//refresh the students array
+		Student.fetchStudents();
+
+		index = students.findIndex(function(student){
+			if(student.name == name) return student;
+		});
+
+		students[index].exp = val;
+		localStorage.students = JSON.stringify(students);		
+
+	}
+
+	//Student.kickoff(studentView.init)
 	Student.kickoff = function(callback){
 		Student.fetchStudents(Student.main, callback);
 	}
 
 	Student.main = function(callback){
+		students.forEach(function(student){
+			studentView.showTemplate('student', 'students', student);
+		});
+
+
 		var sortedStudents = Student.sorted(students);
 		Student.overPairedWith(sortedStudents);
 		Student.createPairs(sortedStudents);
@@ -228,7 +251,7 @@
 						      	  };
 			}
 
-			studentView.showPairs(pairLiteral);
+			studentView.showTemplate('pair', 'results table', pairLiteral);
 		});
 
 		console.log(pairs);

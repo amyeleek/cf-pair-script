@@ -16,6 +16,16 @@
 	            {{/if}}
             </tr>
       	</script>
+      	<script id="student-template" type="text/x-handlebars-template">
+	        	<li data-name="{{name}}">Name: {{name}}, Experience: {{exp}}  
+	        	<select id="exp">	
+	        		<option>Change</option>	
+	        	 	<option>1</option>
+	        	 	<option>2</option>
+	        	 	<option>3</option>
+	        	</select>
+	        	Driver count: {{driverCount}}, Previously paired with: {{pairedWith}}</li>
+      	</script>
   		<section id="results">
         <table>
         	<thead>
@@ -24,7 +34,12 @@
         	    <th>Navigator 2</th>
         	 </thead>
         </table>
-        <button name="pairs">Create Pairs</button>
+        <button id="pairs">Create Pairs</button>
+  		</section>
+  		<section>
+  			<h4>Students</h4>
+  			<ul id="students">
+  			</ul>
   		</section>
   		<script src="https://code.jquery.com/jquery-2.2.2.min.js"></script>
   		<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.js"></script>
