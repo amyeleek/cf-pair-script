@@ -210,7 +210,16 @@
 	}
 
 	Student.updateExp = function(name, val){
-		
+		//refresh the students array
+		Student.fetchStudents();
+
+		index = students.findIndex(function(student){
+			if(student.name == name) return student;
+		});
+
+		students[index].exp = val;
+		localStorage.students = JSON.stringify(students);		
+
 	}
 
 	//Student.kickoff(studentView.init)
