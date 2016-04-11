@@ -11,9 +11,9 @@
 	}
 
 	studentView.expHandler = function(){
-		$('#exp').on('click', function(e){
-			$exp = $(this).siblings('select').val();
-			$name = $(this).parent().data('name');
+		$('#exp').on('change', function(e){
+			$exp = $(this).val();
+			$name = $(this).siblings('li').data('name');
 			Student.updateExp($name, $exp);
 		});
 	}
