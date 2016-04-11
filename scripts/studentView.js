@@ -10,9 +10,9 @@
 		});
 	}
 
-	studentView.showPairs = function(pair){
-		var template = Handlebars.compile($('#pair-template').text());
-		$('#results table').append(template(pair));
+	studentView.showTemplate = function(temp, ele, data){
+		var template = Handlebars.compile($('#'+ temp +'-template').text());
+		$('#'+ele).append(template(data));
 	}
 
 	module.studentView = studentView;
