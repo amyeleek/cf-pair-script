@@ -28,5 +28,7 @@
 		studentView.expHandler();
 	}
 
+	$(document).ready(studentView.buttonHandler());
+
 	module.studentView = studentView;
 })(window)
