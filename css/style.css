@@ -1,0 +1,39 @@
+/* :::::  pairs app - styles  ::::: */
+
+body {
+  padding: 25px;
+  background: #000;
+  font-family: 'Roboto Condensed', sans-serif;
+  color: #fff;
+}
+
+header {
+  margin-bottom: 50px;
+}
+
+header img {
+  width: 250px;
+}
+
+th, tr {
+  border: solid 1px #fff;
+  padding: 25px;
+  width: 175px;
+}
+
+button {
+  margin: 25px 0;
+  padding: 10px 50px;
+  background: #cf3127;
+  transition: 350ms all;
+  font-size: 15px;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #fff;
+  color: #cf3127;
+}
