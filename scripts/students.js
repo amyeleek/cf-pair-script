@@ -143,6 +143,8 @@
 		}
 	};
 
+	//Consider: Splitting this into two functions, one to flatten the array 
+	//(to go back into students) and one to store the students array
 	Student.storeStudents =function(){
 		var flat = [].concat.apply([], pairs);
 		localStorage.students = JSON.stringify(flat);

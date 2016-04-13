@@ -1,6 +1,9 @@
 (function(module){
 	studentView = {};
 
+	//Consider: Make two buttons. One to store the students (with current paired with),
+	// another to run the algorithm again without updating the paired with array
+
 	//click button event for loading new pairs
 	//clears out old pairs if they're there
 	studentView.buttonHandler = function(){
@@ -11,10 +14,11 @@
 	}
 
 	studentView.expHandler = function(){
-		$('#exp').on('change', function(e){
+		$('.exp').on('change', function(e){
 			$exp = $(this).val();
-			$name = $(this).siblings('li').data('name');
+			$name = $(this).parent().data('name');
 			Student.updateExp($name, $exp);
+			//update exp in view
 		});
 	}
 
