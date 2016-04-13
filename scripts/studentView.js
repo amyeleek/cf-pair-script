@@ -24,11 +24,18 @@
 	}
 
 	studentView.init = function(){
+		Student.fetchStudents();
+		students = Student.getStudents();
+
+		students.forEach(function(student){
+			studentView.showTemplate('student', 'students', student);
+		});
+
 		studentView.buttonHandler();
 		studentView.expHandler();
 	}
 
-	$(document).ready(studentView.buttonHandler());
+	$(document).ready(studentView.init);
 
 	module.studentView = studentView;
 })(window)

@@ -148,6 +148,11 @@
 		localStorage.students = JSON.stringify(flat);
 	};
 
+	//getter for the students array
+	Student.getStudents = function(){
+		return students;
+	}
+
 	Student.sorted = function(arr){
 		var less = arr.filter(lessFilter);
 		lessLen = less.length;
@@ -247,10 +252,6 @@
 	};
 
 	Student.main = function(callback){
-		students.forEach(function(student){
-			studentView.showTemplate('student', 'students', student);
-		});
-
 
 		var sortedStudents = Student.sorted(students);
 		Student.overPairedWith(sortedStudents);
@@ -284,103 +285,3 @@
 	module.Student = Student;
 
 })(window)
-
-// ,
-// {
-// 	"name": "Austin King",
-// 	"exp": 2,
-// 	"driver": false,
-// 	"driverCount": 0,
-// 	"pairedWith": []
-// },
-// {
-// 	"name": "Joel Stanner",
-// 	"exp": 3,
-// 	"driver": false,
-// 	"driverCount": 0,
-// 	"pairedWith": []
-// },
-// {
-// 	"name": "Dave Parker",
-// 	"exp": 1,
-// 	"driver": false,
-// 	"driverCount": 0,
-// 	"pairedWith": []
-// },
-// {
-// 	"name": "David Park",
-// 	"exp": 3,
-// 	"driver": false,
-// 	"driverCount": 0,
-// 	"pairedWith": []
-// },
-// {
-// 	"name": "Heidi Laurson",
-// 	"exp": 2,
-// 	"driver": false,
-// 	"driverCount": 0,
-// 	"pairedWith": []
-// },
-// {
-// 	"name": "Ivan Storck",
-// 	"exp": 3,
-// 	"driver": false,
-// 	"driverCount": 0,
-// 	"pairedWith": []
-// },
-// {
-// 	"name": "Jeff Malek",
-// 	"exp": 1,
-// 	"driver": false,
-// 	"driverCount": 0,
-// 	"pairedWith": []
-// },
-// {
-// 	"name": "Jose Tello",
-// 	"exp": 1,
-// 	"driver": false,
-// 	"driverCount": 0,
-// 	"pairedWith": []
-// },
-// {
-// 	"name": "Karinne Breidenbach",
-// 	"exp": 3,
-// 	"driver": false,
-// 	"driverCount": 0,
-// 	"pairedWith": []
-// },
-// {
-// 	"name": "Krista Schimpf",
-// 	"exp": 3,
-// 	"driver": false,
-// 	"driverCount": 0,
-// 	"pairedWith": []
-// },
-// {
-// 	"name": "Lindy Levinson",
-// 	"exp": 3,
-// 	"driver": false,
-// 	"driverCount": 0,
-// 	"pairedWith": []
-// },
-// {
-// 	"name": "Mary Dickson",
-// 	"exp": 3,
-// 	"driver": false,
-// 	"driverCount": 0,
-// 	"pairedWith": []
-// },
-// {
-// 	"name": "Stephanie Lingwood",
-// 	"exp": 1,
-// 	"driver": false,
-// 	"driverCount": 0,
-// 	"pairedWith": []
-// },
-// {
-// 	"name": "Spencer Caldwell",
-// 	"exp": 2,
-// 	"driver": false,
-// 	"driverCount": 0,
-// 	"pairedWith": []
-// }]
