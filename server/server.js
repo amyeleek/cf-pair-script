@@ -42,17 +42,14 @@ app.post('/students', function(req, res){
 //update student
 app.put('/students/:student', function(req, res){
   var updatedStudent = req.body;
-  Student.findOneAndUpdate(Student.find(
-  	{'name': req.params.student}, 
-  	{updatedStudent}, options, 
-  	function(err){
-  		if (err) {
-  			return handleError(err, res);
-  		}else{
-  			return res.json({msg: 'Huge success!'});
-  		}
+  Student.findOneAndUpdate(
+  	{"name": req.params.student}, updatedStudent, function(err, student){
+  	if(err){
+  		console.log(err);
+  	}else{
+  		console.log("Huge success!");
   	}
-  ))
+  });
 })
 
 //delete a single student
