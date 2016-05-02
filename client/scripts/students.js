@@ -12,13 +12,16 @@
 */
 
 	//full array of students.
-	var students = []
+	students = []
 
 	//the array of pairs. Is an array of arrays
 	var pairs = [];
 
 	//length of the array of less experienced students
 	var lessLen = 0;
+
+	//the base URL for the API so we don't have to hard code it all the damn time
+	var apiUrl = 'http://localhost:3000/students/'
 
 	// TODO: 3. Sort the class array based on experience level, ascending
 	function byExp(a, b) {
@@ -113,47 +116,85 @@
 
 	//load students into memory
 	function loadStudents(data){
-		data.forEach(function(student){
-			students.push(new Student(student));
+		students = data.map(function(student){
+			return new Student(student);
 		});
 	};
+
+	var constructAjax = function(){
+	  return function(type, student, name){
+		if (name){ 
+			var url = apiUrl + name;
+		}else{
+			var url = apiUrl;
+		}
+
+		$.ajax({
+		type: type,
+		url:  url,
+		contentType: "application/json",
+		data: JSON.stringify({"name": student.name, 
+							  "exp": student.exp, 
+							  "driver": student.driver, 
+							  "driverCount": student.driverCount,
+							  "pairedWith": student.pairedWith})
+		});
+	  }
+	}
+
 
 	//flatten the pairs array and store it, so we keep the pairedWith values
 
 	function Student(args){
 		Object.keys(args).forEach(function(k){
-  	  this[k] = args[k];
-  	},this);
+  	 	  this[k] = args[k];
+  		},this);
 	};
 
 	//fetch students from persistant storage
-	//does not pull from JSON if the JSON has been updated
-	Student.fetchStudents = function(callback, callback2){
+	Student.getStudents = function(callback, callback2){
 		students = [];
-
-		if(localStorage.students){
-			loadStudents(JSON.parse(localStorage.students));
+		$.getJSON(apiUrl, function(data){
+			loadStudents(data.data);
 			if(callback) callback(callback2);
-		}else{
-			$.getJSON('/data/students.json', function(data){
-				localStorage.students = JSON.stringify(data);
-				loadStudents(data);
-				if(callback) callback(callback2);
-			})
-		}
+		})
 	};
+
+	//I don't know what we're going to do with this but it will probably be useful someday
+	Student.getStudent = function(name){
+		$.getJSON(apiUrl + name, function(data){
+			console.log(data);
+		});
+	}
+
+	Student.putStudent = function(student){
+		var put = constructAjax();
+		put('post', student);
+	}
+
+	Student.updateStudent = function(student){
+		var update = constructAjax();
+		update('put', student, student.name);
+	}
+
+	Student.deleteStudent = function(student){
+		$.ajax({
+			type: "DELETE",
+			url:  apiUrl + student
+		});
+	}
 
 	//Consider: Splitting this into two functions, one to flatten the array 
 	//(to go back into students) and one to store the students array
-	Student.storeStudents =function(){
-		var flat = [].concat.apply([], pairs);
-		localStorage.students = JSON.stringify(flat);
-	};
+	// Student.storeStudents =function(){
+	// 	var flat = [].concat.apply([], pairs);
+	// 	localStorage.students = JSON.stringify(flat);
+	// };
 
 	//getter for the students array
-	Student.getStudents = function(){
-		return students;
-	}
+	// Student.getStudents = function(){
+	// 	return students;
+	// }
 
 	Student.sorted = function(arr){
 		var less = arr.filter(lessFilter);
