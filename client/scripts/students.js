@@ -12,7 +12,7 @@
 */
 
 	//full array of students.
-	students = []
+	students = [];
 
 	//the array of pairs. Is an array of arrays
 	var pairs = [];
@@ -114,6 +114,10 @@
 		return student.driver = false;
 	};
 
+	function flatten(){
+	   return [].concat.apply([], pairs);
+	}
+
 	//load students into memory
 	function loadStudents(data){
 		students = data.map(function(student){
@@ -123,22 +127,22 @@
 
 	var constructAjax = function(){
 	  return function(type, student, name){
-		if (name){ 
-			var url = apiUrl + name;
-		}else{
-			var url = apiUrl;
-		}
+		url = name ? apiUrl + name : apiUrl;
 
 		$.ajax({
 		type: type,
 		url:  url,
 		contentType: "application/json",
-		data: JSON.stringify({"name": student.name, 
+		data: JSON.stringify({"id": student.id,
+							  "name": student.name, 
 							  "exp": student.exp, 
 							  "driver": student.driver, 
 							  "driverCount": student.driverCount,
-							  "pairedWith": student.pairedWith})
-		});
+							  "pairedWith": student.pairedWith}),
+		success: function(data, msg, xhr){
+			studentView.showTemplate('student', 'students', student);
+		  }
+		})
 	  }
 	}
 
@@ -152,11 +156,10 @@
 	};
 
 	//fetch students from persistant storage
-	Student.getStudents = function(callback, callback2){
-		students = [];
+	Student.getStudents = function(callback){
 		$.getJSON(apiUrl, function(data){
 			loadStudents(data.data);
-			if(callback) callback(callback2);
+			if(callback) callback();
 		})
 	};
 
@@ -178,23 +181,22 @@
 	}
 
 	Student.deleteStudent = function(student){
+		url = student ? apiUrl + student : apiUrl;
+
 		$.ajax({
 			type: "DELETE",
-			url:  apiUrl + student
+			url:  url
 		});
 	}
 
-	//Consider: Splitting this into two functions, one to flatten the array 
-	//(to go back into students) and one to store the students array
-	// Student.storeStudents =function(){
-	// 	var flat = [].concat.apply([], pairs);
-	// 	localStorage.students = JSON.stringify(flat);
-	// };
+	Student.storeStudents = function(){
+		var flat = flatten();
+		pairs = [];
 
-	//getter for the students array
-	// Student.getStudents = function(){
-	// 	return students;
-	// }
+		flat.forEach(function(student){
+			Student.updateStudent(student);
+		})
+	}
 
 	Student.sorted = function(arr){
 		var less = arr.filter(lessFilter);
@@ -278,20 +280,20 @@
 
 	Student.updateExp = function(name, val){
 		//refresh the students array
-		Student.fetchStudents();
+		//Student.getStudents();
 
 		index = students.findIndex(function(student){
 			if(student.name == name) return student;
 		});
 
 		students[index].exp = val;
-		localStorage.students = JSON.stringify(students);		
+		Student.updateStudent(students[index]);	
 
 	}
 
 	//Student.kickoff(studentView.init)
 	Student.kickoff = function(callback){
-		Student.fetchStudents(Student.main, callback);
+		Student.getStudents(callback);
 	};
 
 	Student.main = function(callback){
@@ -314,13 +316,10 @@
 						      	  };
 			}
 
-			studentView.showTemplate('pair', 'results table', pairLiteral);
+			studentView.showTemplate('pair', 'results', pairLiteral);
 		});
 
 		console.log(pairs);
-
-		Student.storeStudents();
-		pairs = [];
 
 		if(callback) callback();
 	};
