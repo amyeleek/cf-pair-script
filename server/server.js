@@ -44,11 +44,7 @@ app.put('/students/:student', function(req, res){
   var updatedStudent = req.body;
   Student.findOneAndUpdate(
   	{"name": req.params.student}, updatedStudent, function(err, student){
-  	if(err){
-  		console.log(err);
-  	}else{
-  		console.log("Huge success!");
-  	}
+  	 err ? console.log(err) : res.json(student);
   });
 })
 

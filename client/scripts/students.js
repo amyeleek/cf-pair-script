@@ -230,12 +230,6 @@
 		//TODO: check if these folks are unmatchable and if we need to rerun the algorithm
 		if (arr.length <= 3) {
 			pairs.push(arr);
-			//update pairedWith depending on how many we have left
-			if(arr.length == 3){
-				updatePairedWith(arr[0], arr[1], arr[2]);
-			}else{
-				updatePairedWith(arr[0], arr[1]);
-			}
 			sortedStudents = [];
 			arr = [];
 			//return true;
@@ -252,10 +246,11 @@
 			if (hasPairedWith(arr[0], arr[i])) continue;
 
 			pairs.push([arr[0], arr[i]]);
-			updatePairedWith(arr[0], arr[i]);
+			//updatePairedWith(arr[0], arr[i]);
 			break;
 		}
 
+		//can we break this out into another function? 
 		if (i === arr.length){
       		console.log("arr length", arr.length);
 
@@ -274,7 +269,7 @@
 		//when we make one pair, splice that pair out of the array and recurse
 		var spliced = splicedArray(arr, i);
 		if (spliced.length > 1) Student.createPairs(spliced);
-		arr = [];
+		//arr = [];
 		//return;
 	};
 
@@ -291,10 +286,16 @@
 
 	}
 
-	//Student.kickoff(studentView.init)
-	Student.kickoff = function(callback){
-		Student.getStudents(callback);
-	};
+	//iterate over the pairs array and update the pairedWith
+	Student.updatePairs = function(){
+		pairs.forEach(function(pair){
+			if(pair.length == 3){
+				updatePairedWith(pair[0], pair[1], pair[2]);
+			}else{
+				updatePairedWith(pair[0], pair[1]);
+			}
+		})
+	}
 
 	Student.main = function(callback){
 
@@ -303,7 +304,7 @@
 		Student.createPairs(sortedStudents);
 
 		pairs.forEach(function(pair){
-			Student.designateDriver(pair);
+			Student.designateDriver(pair)
 
 			if(pair[2]){
 				var pairLiteral = {driver: pair[0].name,

@@ -31,6 +31,7 @@
 
 		$('#save').on('click', function(e){
 			studentView.clearData('#students li');
+			Student.updatePairs();
 			Student.storeStudents();
 		});
 	}
@@ -51,7 +52,7 @@
 	}
 
 	//decouple pair-making from the view
-	$(document).ready(Student.kickoff(studentView.init));
+	$(document).ready(Student.getStudents(studentView.init));
 
 	module.studentView = studentView;
 })(window)
