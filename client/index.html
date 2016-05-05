@@ -22,8 +22,8 @@
             </tr>
       	</script>
       	<script id="student-template" type="text/x-handlebars-template">
-	        	<li data-name="{{name}}">Name: {{name}}, Experience: {{exp}}  
-	        	<select id="exp">	
+	        	<li data-name="{{name}}">Name: {{name}}, Experience: <span class="stuExp">{{exp}}</span>  
+	        	<select class="exp">	
 	        		<option>Change</option>	
 	        	 	<option>1</option>
 	        	 	<option>2</option>
@@ -31,15 +31,16 @@
 	        	</select>
 	        	Driver count: {{driverCount}}, Previously paired with: {{pairedWith}}</li>
       	</script>
-  		<section id="results">
-        <table>
+  		<section>
+        <table id="results">
         	<thead>
         	    <th>Driver</th>
         	    <th>Navigator</th>
         	    <th>Navigator 2</th>
         	 </thead>
         </table>
-        <button id="pairs">Create Pairs</button>
+        <button id="create">Create Pairs</button>
+        <button id="save">Save Pairs</button>
   		</section>
   		<section>
   			<h4>Students</h4>

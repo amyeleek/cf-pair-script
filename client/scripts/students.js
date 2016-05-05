@@ -12,13 +12,16 @@
 */
 
 	//full array of students.
-	var students = []
+	students = [];
 
 	//the array of pairs. Is an array of arrays
 	var pairs = [];
 
 	//length of the array of less experienced students
 	var lessLen = 0;
+
+	//the base URL for the API so we don't have to hard code it all the damn time
+	var apiUrl = 'http://localhost:3000/students/'
 
 	// TODO: 3. Sort the class array based on experience level, ascending
 	function byExp(a, b) {
@@ -68,6 +71,19 @@
     return arr;
   };
 
+  function reRunCreate(){
+  	console.log("Re-run create");
+	console.log("pairs", pairs);
+	pairs = []; //clear pairs
+	console.log("pairs length", pairs.length);
+	
+	//Run sort and randomize again on Students array and pass that in to creatPairs again.
+	sortedStudents = Student.sorted(students);
+	
+	Student.overPairedWith(sortedStudents);
+	Student.createPairs(sortedStudents);
+  }
+
 	//takes two items out of an array and returns the modified array.
 	//We only pass in one index because the other pair will always be the first element of the array
 	function splicedArray(arr, i){
@@ -111,48 +127,90 @@
 		return student.driver = false;
 	};
 
+	function flatten(){
+	   return [].concat.apply([], pairs);
+	}
+
 	//load students into memory
 	function loadStudents(data){
-		data.forEach(function(student){
-			students.push(new Student(student));
+		students = data.map(function(student){
+			return new Student(student);
 		});
 	};
+
+	var constructAjax = function(){
+	  return function(type, student, name){
+		url = name ? apiUrl + name : apiUrl;
+
+		$.ajax({
+		type: type,
+		url:  url,
+		contentType: "application/json",
+		data: JSON.stringify({"id": student.id,
+							  "name": student.name, 
+							  "exp": student.exp, 
+							  "driver": student.driver, 
+							  "driverCount": student.driverCount,
+							  "pairedWith": student.pairedWith}),
+		success: function(data, msg, xhr){
+			studentView.showTemplate('student', 'students', student);
+		  }
+		})
+	  }
+	}
+
 
 	//flatten the pairs array and store it, so we keep the pairedWith values
 
 	function Student(args){
 		Object.keys(args).forEach(function(k){
-  	  this[k] = args[k];
-  	},this);
+  	 	  this[k] = args[k];
+  		},this);
 	};
 
 	//fetch students from persistant storage
-	//does not pull from JSON if the JSON has been updated
-	Student.fetchStudents = function(callback, callback2){
-		students = [];
-
-		if(localStorage.students){
-			loadStudents(JSON.parse(localStorage.students));
-			if(callback) callback(callback2);
-		}else{
-			$.getJSON('/data/students.json', function(data){
-				localStorage.students = JSON.stringify(data);
-				loadStudents(data);
-				if(callback) callback(callback2);
-			})
-		}
+	Student.getStudents = function(callback){
+		$.getJSON(apiUrl, function(data){
+			loadStudents(data.data);
+			if(callback) callback();
+		})
 	};
 
-	Student.storeStudents =function(){
-		var flat = [].concat.apply([], pairs);
-		localStorage.students = JSON.stringify(flat);
-	};
-
-	//getter for the students array
-	Student.getStudents = function(){
-		return students;
+	//I don't know what we're going to do with this but it will probably be useful someday
+	Student.getStudent = function(name){
+		$.getJSON(apiUrl + name, function(data){
+			console.log(data);
+		});
 	}
 
+	Student.putStudent = function(student){
+		var put = constructAjax();
+		put('post', student);
+	}
+
+	Student.updateStudent = function(student){
+		var update = constructAjax();
+		update('put', student, student.name);
+	}
+
+	Student.deleteStudent = function(student){
+		url = student ? apiUrl + student : apiUrl;
+
+		$.ajax({
+			type: "DELETE",
+			url:  url
+		});
+	}
+
+	Student.storeStudents = function(){
+		var flat = flatten();
+		
+		flat.forEach(function(student){
+			Student.updateStudent(student);
+		})
+	}
+
+	//does this need to be public?
 	Student.sorted = function(arr){
 		var less = arr.filter(lessFilter);
 		lessLen = less.length;
@@ -184,72 +242,72 @@
 		//if the array has three or less items, we can't create any more pairs
 		//TODO: check if these folks are unmatchable and if we need to rerun the algorithm
 		if (arr.length <= 3) {
+			//doesn't check all of them in a trio
+			//also runs into some weird, horrible recursion problems
+			if (hasPairedWith(arr[0], arr[1])) reRunCreate();
+
 			pairs.push(arr);
-			//update pairedWith depending on how many we have left
-			if(arr.length == 3){
-				updatePairedWith(arr[0], arr[1], arr[2]);
-			}else{
-				updatePairedWith(arr[0], arr[1]);
-			}
 			sortedStudents = [];
 			arr = [];
-			//return true;
+			return true;
 		}
 
 		//take the first student in the array. Loop over the array until we find someone to pair with
+		//Needs to be a for loop so we can break and continue
 		//BUG: If there's an array where a person has paired with everyone 
 		//left in the array (and is therefore unpairable), the loop will exit with i at the 
 		//array.length and call splicedArray with i of the length of the array. Then splice() 
-		//does nothing and we lose someone from the beginning of the array.
+		//does nothing and we lose someone from the beginning of the array. <- Possibly fixed?
 		for(var i = 1; i<arr.length; i++) {
 
 			if (bothLowExp(arr[0], arr[i])) continue;
 			if (hasPairedWith(arr[0], arr[i])) continue;
 
 			pairs.push([arr[0], arr[i]]);
-			updatePairedWith(arr[0], arr[i]);
+			//updatePairedWith(arr[0], arr[i]);
 			break;
 		}
 
+		//can we break this out into another function? 
 		if (i === arr.length){
-      		console.log("arr length", arr.length);
-
-      		console.log("pairs", pairs);
-      		pairs = []; //clear pairs
-      		console.log("pairs length", pairs.length);
-      		
-      		//Run sort and randomize again on Students array and pass that in to creatPairs again.
-      		sortedStudents = Student.sorted(students);
-      		
-      		//Student.overPairedWith(sortedStudents);
-      		clearPairedWith(sortedStudents);
-      		Student.createPairs(sortedStudents);
+      		reRunCreate();
     	};
 
 		//when we make one pair, splice that pair out of the array and recurse
 		var spliced = splicedArray(arr, i);
 		if (spliced.length > 1) Student.createPairs(spliced);
-		arr = [];
+		//arr = [];
 		//return;
 	};
 
+
 	Student.updateExp = function(name, val){
 		//refresh the students array
-		Student.fetchStudents();
+		//Student.getStudents();
 
 		index = students.findIndex(function(student){
 			if(student.name == name) return student;
 		});
 
 		students[index].exp = val;
-		localStorage.students = JSON.stringify(students);		
+		Student.updateStudent(students[index]);	
 
 	}
 
-	//Student.kickoff(studentView.init)
-	Student.kickoff = function(callback){
-		Student.fetchStudents(Student.main, callback);
-	};
+	//iterate over the pairs array and update the pairedWith
+	Student.updatePairs = function(){
+		pairs.forEach(function(pair){
+			if(pair.length == 3){
+				updatePairedWith(pair[0], pair[1], pair[2]);
+			}else{
+				updatePairedWith(pair[0], pair[1]);
+			}
+		})
+	}
+
+	Student.clearPairs = function(){
+		pairs = [];
+	}
 
 	Student.main = function(callback){
 
@@ -258,7 +316,7 @@
 		Student.createPairs(sortedStudents);
 
 		pairs.forEach(function(pair){
-			Student.designateDriver(pair);
+			Student.designateDriver(pair)
 
 			if(pair[2]){
 				var pairLiteral = {driver: pair[0].name,
@@ -271,13 +329,10 @@
 						      	  };
 			}
 
-			studentView.showTemplate('pair', 'results table', pairLiteral);
+			studentView.showTemplate('pair', 'results', pairLiteral);
 		});
 
 		console.log(pairs);
-
-		Student.storeStudents();
-		pairs = [];
 
 		if(callback) callback();
 	};
