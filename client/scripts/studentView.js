@@ -38,7 +38,7 @@
 	}
 
 	studentView.expHandler = function(){
-		$('.exp').on('change', function(e){
+		$('#students').on('change', '.exp', function(e){
 			$exp = $(this).val();
 			$name = $(this).parent().data('name');
 			Student.updateExp($name, $exp);

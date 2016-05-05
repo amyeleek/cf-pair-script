@@ -73,8 +73,6 @@
 
   function reRunCreate(){
   	console.log("Re-run create");
-  	console.log("arr length", arr.length);
-
 	console.log("pairs", pairs);
 	pairs = []; //clear pairs
 	console.log("pairs length", pairs.length);
@@ -82,8 +80,7 @@
 	//Run sort and randomize again on Students array and pass that in to creatPairs again.
 	sortedStudents = Student.sorted(students);
 	
-	//Student.overPairedWith(sortedStudents);
-	clearPairedWith(sortedStudents);
+	Student.overPairedWith(sortedStudents);
 	Student.createPairs(sortedStudents);
   }
 
@@ -213,6 +210,7 @@
 		})
 	}
 
+	//does this need to be public?
 	Student.sorted = function(arr){
 		var less = arr.filter(lessFilter);
 		lessLen = less.length;
@@ -245,19 +243,21 @@
 		//TODO: check if these folks are unmatchable and if we need to rerun the algorithm
 		if (arr.length <= 3) {
 			//doesn't check all of them in a trio
+			//also runs into some weird, horrible recursion problems
 			if (hasPairedWith(arr[0], arr[1])) reRunCreate();
 
 			pairs.push(arr);
 			sortedStudents = [];
 			arr = [];
-			//return true;
+			return true;
 		}
 
 		//take the first student in the array. Loop over the array until we find someone to pair with
+		//Needs to be a for loop so we can break and continue
 		//BUG: If there's an array where a person has paired with everyone 
 		//left in the array (and is therefore unpairable), the loop will exit with i at the 
 		//array.length and call splicedArray with i of the length of the array. Then splice() 
-		//does nothing and we lose someone from the beginning of the array.
+		//does nothing and we lose someone from the beginning of the array. <- Possibly fixed?
 		for(var i = 1; i<arr.length; i++) {
 
 			if (bothLowExp(arr[0], arr[i])) continue;
@@ -280,9 +280,6 @@
 		//return;
 	};
 
-	Student.clearPairs = function(){
-		pairs = [];
-	}
 
 	Student.updateExp = function(name, val){
 		//refresh the students array
@@ -306,6 +303,10 @@
 				updatePairedWith(pair[0], pair[1]);
 			}
 		})
+	}
+
+	Student.clearPairs = function(){
+		pairs = [];
 	}
 
 	Student.main = function(callback){
