@@ -26,6 +26,7 @@
 	studentView.buttonHandler = function(){
 		$('#create').on('click', function(e){
 			studentView.clearData('.pair');
+			Student.clearPairs();
 			Student.main();
 		});
 

@@ -71,6 +71,22 @@
     return arr;
   };
 
+  function reRunCreate(){
+  	console.log("Re-run create");
+  	console.log("arr length", arr.length);
+
+	console.log("pairs", pairs);
+	pairs = []; //clear pairs
+	console.log("pairs length", pairs.length);
+	
+	//Run sort and randomize again on Students array and pass that in to creatPairs again.
+	sortedStudents = Student.sorted(students);
+	
+	//Student.overPairedWith(sortedStudents);
+	clearPairedWith(sortedStudents);
+	Student.createPairs(sortedStudents);
+  }
+
 	//takes two items out of an array and returns the modified array.
 	//We only pass in one index because the other pair will always be the first element of the array
 	function splicedArray(arr, i){
@@ -191,8 +207,7 @@
 
 	Student.storeStudents = function(){
 		var flat = flatten();
-		pairs = [];
-
+		
 		flat.forEach(function(student){
 			Student.updateStudent(student);
 		})
@@ -229,6 +244,9 @@
 		//if the array has three or less items, we can't create any more pairs
 		//TODO: check if these folks are unmatchable and if we need to rerun the algorithm
 		if (arr.length <= 3) {
+			//doesn't check all of them in a trio
+			if (hasPairedWith(arr[0], arr[1])) reRunCreate();
+
 			pairs.push(arr);
 			sortedStudents = [];
 			arr = [];
@@ -252,18 +270,7 @@
 
 		//can we break this out into another function? 
 		if (i === arr.length){
-      		console.log("arr length", arr.length);
-
-      		console.log("pairs", pairs);
-      		pairs = []; //clear pairs
-      		console.log("pairs length", pairs.length);
-      		
-      		//Run sort and randomize again on Students array and pass that in to creatPairs again.
-      		sortedStudents = Student.sorted(students);
-      		
-      		//Student.overPairedWith(sortedStudents);
-      		clearPairedWith(sortedStudents);
-      		Student.createPairs(sortedStudents);
+      		reRunCreate();
     	};
 
 		//when we make one pair, splice that pair out of the array and recurse
@@ -272,6 +279,10 @@
 		//arr = [];
 		//return;
 	};
+
+	Student.clearPairs = function(){
+		pairs = [];
+	}
 
 	Student.updateExp = function(name, val){
 		//refresh the students array
