@@ -23,7 +23,7 @@
 
 	//click button event for loading new pairs
 	//clears out old pairs if they're there
-	studentView.buttonHandler = function(){
+	studentView.buttonsHandler = function(){
 		$('#create').on('click', function(e){
 			studentView.clearData('.pair');
 			Student.clearPairs();
@@ -34,6 +34,10 @@
 			studentView.clearData('#students li');
 			Student.updatePairs();
 			Student.storeStudents();
+		});
+
+		$('#pop').on('click', function(e){
+			Student.autoPutStudents();
 		});
 	}
 
@@ -47,10 +51,15 @@
 		});
 	}
 
+	studentView.hidePopulate = function(){
+		if($('#students li')) $('#pop').hide();
+	}
+
 	studentView.init = function(){
-		studentView.buttonHandler();
+		studentView.buttonsHandler();
 		studentView.expHandler();
 		studentView.populateStudents();
+		studentView.hidePopulate();
 	}
 
 	//decouple pair-making from the view

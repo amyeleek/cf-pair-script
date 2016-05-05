@@ -210,6 +210,14 @@
 		})
 	}
 
+	Student.autoPutStudents = function(){
+		$.getJSON('data/students.json', function(data){
+			data.forEach(function(student){
+				Student.putStudent(student);
+			});
+		});
+	}
+
 	//does this need to be public?
 	Student.sorted = function(arr){
 		var less = arr.filter(lessFilter);
