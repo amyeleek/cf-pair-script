@@ -42,7 +42,8 @@
 			$exp = $(this).val();
 			$name = $(this).parent().data('name');
 			Student.updateExp($name, $exp);
-			//update exp in view
+			//update exp in view 
+			$(this).siblings('.stuExp').html($exp);
 		});
 	}
 
