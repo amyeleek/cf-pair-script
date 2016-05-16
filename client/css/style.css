@@ -15,7 +15,7 @@ header img {
   width: 250px;
 }
 
-th, tr {
+th, tr, td {
   border: solid 1px #fff;
   padding: 25px;
   width: 175px;
@@ -36,4 +36,8 @@ button {
 button:hover {
   background: #fff;
   color: #cf3127;
+}
+
+#students li{
+  padding: 2%;
 }
