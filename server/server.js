@@ -49,7 +49,8 @@ app.put('/students/:student', function(req, res){
 })
 
 //delete a single student
-app.delete('/students/:student', (req, res) => {
+app.delete('/students/:student', function(req, res) {
+	debugger;
   Student.find({'name': req.params.student}, function(err, student) {
     Student.remove( function(err, student) {
       return res.json({message: 'student removed'});

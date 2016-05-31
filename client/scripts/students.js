@@ -15,7 +15,7 @@
 	students = [];
 
 	//the array of pairs. Is an array of arrays
-	var pairs = [];
+	pairs = [];
 
 	//length of the array of less experienced students
 	var lessLen = 0;

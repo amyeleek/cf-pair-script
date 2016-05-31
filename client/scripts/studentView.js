@@ -1,3 +1,27 @@
+/* 
+ Ideas for React components: 
+
+	Wait on implementing swappable pairs
+
+   Pairs box
+      Methods: Render, swapPair, savePairs, createPairs
+      Children: 
+         Pair
+            Methods: Render, updatePair, deletePair
+            Children:
+               Student
+                  Methods: Render, updatePairedWith, updateDriver
+
+	Drag and drop to swap pairs, or manually type name? Click to select and auto-swap? Press button to swap? 
+
+    StudentList
+      Methods: Render, deleteStudent, editStudent
+      Children:
+        Student 
+           Methods: Render, handleEdit, update[name, exp, pairedWith]
+
+*/
+
 (function(module){
 	studentView = {};
 
@@ -52,7 +76,7 @@
 	}
 
 	studentView.hidePopulate = function(){
-		if($('#students li')) $('#pop').hide();
+		if($('#students li') === []) $('#pop').hide();
 	}
 
 	studentView.init = function(){
