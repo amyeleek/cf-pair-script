@@ -133,15 +133,8 @@
 				);
 			});
 
-			// var showName;
-			// if(nameChange){
-			// 	showName = <StudentNameForm />
-			// }else{
-			// 	showName = <StudentName />
-			// }
-
 			return (
-				<li><StudentName name={this.props.name} />, Experience: {this.state.exp}  
+				<li>Name: <StudentNameForm name={this.props.name} /> Experience: {this.state.exp}  
 	        	<select class="exp" onChange={this.handleExpChange} value={this.state.exp}>	
 	        		<option value="change">Change</option>	
 	        	 	<option value="1">1</option>
@@ -149,12 +142,6 @@
 	        	 	<option value="3">3</option>
 	        	</select>
 	        	Driver count: {this.props.driverCount}, Previously paired with: <ul>{showPairedWith}</ul></li>);
-		}
-	});
-
-	var StudentName = React.createClass({
-		render: function(){
-			return (<span>Name: {this.props.name}</span>)
 		}
 	});
 
@@ -170,8 +157,7 @@
 		},
 		render: function(){
 			return (
-				<input type="text" placeholder={this.props.name}
-          			   value={this.state.name} onChange={this.handleNameChange} /> 
+				<input type="text" placeholder={this.state.name}  value={this.state.name} onChange={this.handleNameChange} /> 
 			)
 		}
 	});
