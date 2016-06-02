@@ -126,11 +126,6 @@
 			this.setState({exp: e.target.value});
 			Student.updateExp(this.props.name, e.target.value);
 		},
-		changeName: function(){
-			return(
-				<input onChange={this.handleNameChange} placeholder={this.props.name} value={this.props.name}></input>
-			)
-		},
 		render: function() {
 			var showPairedWith = this.props.pairedWith.map(function(pair, i){
 				return (
@@ -164,6 +159,15 @@
 	});
 
 	var StudentNameForm = React.createClass({
+		getInitialState: function(){
+			return(
+				{name: this.props.name}
+			)
+		},
+		handleNameChange: function(e){
+			this.setState({name: e.target.value});
+			//TODO: ...make the API work better...
+		},
 		render: function(){
 			return (
 				<input type="text" placeholder={this.props.name}
