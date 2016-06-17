@@ -106,6 +106,7 @@
 					</ViewStudent>
 				);
 			});
+			///
 			return (
 				<ul className="students">
 					{showStudents}
@@ -114,7 +115,7 @@
 		}
 	});
 
-	//Consider: Make subcombponents of name and pairedWith
+	//Consider: Make updatable subcomponent pairedWith
 	//hide/show paired with
 	var ViewStudent = React.createClass({
 		getInitialState: function(){
@@ -127,12 +128,6 @@
 			Student.updateExp(this.props.name, e.target.value);
 		},
 		render: function() {
-			var showPairedWith = this.props.pairedWith.map(function(pair, i){
-				return (
-					<li key={i}>{pair}</li>
-				);
-			});
-
 			return (
 				<li>Name: <StudentNameForm name={this.props.name} /> Experience: {this.state.exp}  
 	        	<select class="exp" onChange={this.handleExpChange} value={this.state.exp}>	
@@ -141,7 +136,7 @@
 	        	 	<option value="2">2</option>
 	        	 	<option value="3">3</option>
 	        	</select>
-	        	Driver count: {this.props.driverCount}, Previously paired with: <ul>{showPairedWith}</ul></li>);
+	        	Driver count: {this.props.driverCount}, Previously paired with: <PairedWith pairedWith={this.props.pairedWith} /></li>);
 		}
 	});
 
@@ -162,7 +157,25 @@
 		}
 	});
 
-	//decouple pair-making from the view
+	///
+	var PairedWith = React.createClass({
+		deletePair: function(e){
+			console.log(this.key);
+		},
+		render: function(){
+			var showPairedWith = this.props.pairedWith.map(function(pair, i){
+				return (
+					<li key={i}>{pair} <span onClick={this.deletePair}> x</span></li>
+				);
+			}, this)
+
+			return(
+				<ul>{showPairedWith}</ul>
+			)
+		}	
+	});
+
+	///decouple pair-making from the view
 	$(document).ready(Student.getStudents(studentView.init));
 
 	module.studentView = studentView;
