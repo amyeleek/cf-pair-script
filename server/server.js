@@ -43,7 +43,7 @@ app.post('/students', function(req, res){
 app.put('/students/:student', function(req, res){
   var updatedStudent = req.body;
   Student.findOneAndUpdate(
-  	{"name": req.params.student}, updatedStudent, function(err, student){
+  	{"id": req.params.id}, updatedStudent, function(err, student){
   	 err ? console.log(err) : res.json(student);
   });
 })

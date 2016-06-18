@@ -168,6 +168,24 @@
   		},this);
 	};
 
+	///put this on the prototype, add functions for updating name and pairedWith on the prototype too
+	Student.prototype.updateExp = function(val){
+		this.exp = val;
+		Student.updateStudent(this, this.name);	
+
+	}
+
+	Student.prototype.updatePairedWith = function(paired){
+		this.pairedWith = paired;
+		Student.updateStudent(this, this.name);
+	}
+
+	Student.prototype.updateName = function(name){
+		var oldName = this.name;
+		this.name = name;
+		Student.updateStudent(this, oldName);
+	}
+
 	//fetch students from persistant storage
 	Student.getStudents = function(callback){
 		$.getJSON(apiUrl, function(data){
@@ -188,9 +206,9 @@
 		put('post', student);
 	}
 
-	Student.updateStudent = function(student){
+	Student.updateStudent = function(student, name){
 		var update = constructAjax();
-		update('put', student, student.name);
+		update('put', student, name);
 	}
 
 	Student.deleteStudent = function(student){
@@ -288,19 +306,6 @@
 		//return;
 	};
 
-
-	Student.updateExp = function(name, val){
-		//refresh the students array
-		//Student.getStudents();
-
-		index = students.findIndex(function(student){
-			if(student.name == name) return student;
-		});
-
-		students[index].exp = val;
-		Student.updateStudent(students[index]);	
-
-	}
 
 	//iterate over the pairs array and update the pairedWith
 	Student.updatePairs = function(){

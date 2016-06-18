@@ -98,11 +98,9 @@
 
 	var StudentList = React.createClass({
 		render: function() {
-			console.log(students);
-			var showStudents = students.map(function(student){
+			var showStudents = students.map(function(student, i){
 				return (
-					<ViewStudent key={student._id} name={student.name} exp={student.exp} 
-								 driverCount={student.driverCount} pairedWith={student.pairedWith}>
+					<ViewStudent student={student} key={i}>
 					</ViewStudent>
 				);
 			});
@@ -120,23 +118,29 @@
 	var ViewStudent = React.createClass({
 		getInitialState: function(){
 			return(
-				{exp: this.props.exp}
+				{exp: this.props.student.exp}
 			)
 		},
 		handleExpChange: function(e){
 			this.setState({exp: e.target.value});
-			Student.updateExp(this.props.name, e.target.value);
+			this.props.student.updateExp(e.target.value);
+		},
+		handlePairChange: function(paired){
+			this.props.student.updatePairedWith(paired);
+		},
+		handleNameChange: function(newName){
+			this.props.student.updateName(newName);
 		},
 		render: function() {
 			return (
-				<li>Name: <StudentNameForm name={this.props.name} /> Experience: {this.state.exp}  
+				<li>Name: <StudentNameForm name={this.props.student.name} nameChange={this.handleNameChange} /> Experience: {this.state.exp}  
 	        	<select class="exp" onChange={this.handleExpChange} value={this.state.exp}>	
 	        		<option value="change">Change</option>	
 	        	 	<option value="1">1</option>
 	        	 	<option value="2">2</option>
 	        	 	<option value="3">3</option>
 	        	</select>
-	        	Driver count: {this.props.driverCount}, Previously paired with: <PairedWith pairedWith={this.props.pairedWith} /></li>);
+	        	Driver count: {this.props.student.driverCount}, Previously paired with: <PairedWith pair={this.handlePairChange} pairedWith={this.props.student.pairedWith} /></li>);
 		}
 	});
 
@@ -146,31 +150,64 @@
 				{name: this.props.name}
 			)
 		},
+		callName: function(newName){
+			this.props.nameChange(newName);
+		},
+		//this needs to call once the name is completed
 		handleNameChange: function(e){
+			e.preventDefault();
 			this.setState({name: e.target.value});
-			//TODO: ...make the API work better...
+			this.callName(this.props.name);
 		},
 		render: function(){
 			return (
-				<input type="text" placeholder={this.state.name}  value={this.state.name} onChange={this.handleNameChange} /> 
+			   	<form onSubmit={this.handleNameChange}>
+					<input type="text" placeholder={this.state.name}  value={this.state.name}/> 
+				</form>
 			)
 		}
 	});
 
 	///
 	var PairedWith = React.createClass({
-		deletePair: function(e){
-			console.log(this.key);
+		getInitialState: function(){
+			return(
+				{pairedWith: this.props.pairedWith,
+				 newPair: ''}
+			)
+		},
+		callPair: function(paired){
+			this.props.pair(paired);
+		},
+		handleDeletePair: function(key){
+			this.state.pairedWith.splice(key, 1);
+			this.setState({pairedWith: this.state.pairedWith});
+			this.callPair(this.state.pairedWith);
+		},
+		handleNewPair: function(e){
+			this.setState({newPair: e.target.value});
+		},
+		addNewPair: function(e){
+			e.preventDefault();
+			this.state.pairedWith.push(this.state.newPair);
+			this.setState({pairedWith: this.state.pairedWith});
+			this.callPair(this.state.pairedWith);
 		},
 		render: function(){
-			var showPairedWith = this.props.pairedWith.map(function(pair, i){
+			var showPairedWith = this.state.pairedWith.map(function(pair, i){
 				return (
-					<li key={i}>{pair} <span onClick={this.deletePair}> x</span></li>
+					<li key={i}>{pair} <span onClick={ this.handleDeletePair.bind(this, i)}> x</span></li>
 				);
 			}, this)
 
 			return(
-				<ul>{showPairedWith}</ul>
+				<div>
+					<ul>{showPairedWith}</ul>
+
+					<form className="pairForm" onSubmit={this.addNewPair}>
+						<input type="text" placeholder="New pair" onChange={this.handleNewPair}/> 
+					</form>
+				</div>
 			)
 		}	
 	});
