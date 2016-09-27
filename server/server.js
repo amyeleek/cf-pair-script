@@ -51,20 +51,18 @@ app.put('/students/:student', function(req, res){
 //delete a single student
 app.delete('/students/:student', function(req, res) {
 	debugger;
-  Student.find({'name': req.params.student}, function(err, student) {
-    Student.remove( function(err, student) {
-      return res.json({message: 'student removed'});
+  Student.find({'name': req.params.student}).remove(function(err) {
+      console.log('student removed');
     })
   })
-})
 
 //delete all students
 app.delete('/students', function(req, res) {
 	Student.remove({}, function(err) { 
-   		console.log('collection removed') 
+   		console.log('collection removed');
   	});
 })
 
 app.listen(3000, function(){
-	console.log('server started')
+	console.log('server started');
 })
