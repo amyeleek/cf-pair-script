@@ -7,8 +7,6 @@
 		student = $(this).text();
 		students.push({name: student, exp:2,"hasPairedWith":[]});
 	});
-
-	Need persistant storage on this app
 */
 
 	//full array of students.

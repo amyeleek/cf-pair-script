@@ -90,8 +90,8 @@
 		studentView.buttonsHandler();
 		studentView.expHandler();
 		// studentView.populateStudents();
-		studentView.hidePopulate();
 		studentView.renderReact();
+		studentView.hidePopulate();
 	}
 
 	//react
@@ -103,7 +103,7 @@
 					<ViewStudent student={student} key={i}>
 					</ViewStudent>
 				);
-			});
+			}); 
 			///
 			return (
 				<ul className="students">
