@@ -90,11 +90,19 @@
 		studentView.buttonsHandler();
 		studentView.expHandler();
 		// studentView.populateStudents();
+		studentView.hidePopulate(); //doesn't work anymore, fix eventually
 		studentView.renderReact();
-		studentView.hidePopulate();
 	}
 
 	//react
+
+	var PopulateButton = React.createClass({
+		render: function() {
+			return (
+				<button id="pop" title="Load students from JSON file and put them in the DB">Populate Students</button>
+			);
+		}
+	});
 
 	var StudentList = React.createClass({
 		render: function() {
@@ -162,7 +170,7 @@
 		render: function(){
 			return (
 			   	<form onSubmit={this.handleNameChange}>
-					<input type="text" placeholder={this.state.name}  value={this.state.name}/> 
+					<input type="text" placeholder={this.state.name}  defaultValue={this.state.name}/> 
 				</form>
 			)
 		}
