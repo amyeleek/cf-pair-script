@@ -222,7 +222,7 @@
 		var flat = flatten();
 		
 		flat.forEach(function(student){
-			Student.updateStudent(student);
+			Student.updateStudent(student, student.name);
 		})
 	}
 
