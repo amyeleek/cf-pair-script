@@ -139,9 +139,14 @@
 		handleNameChange: function(newName){
 			this.props.student.updateName(newName);
 		},
+		handleDeleteStudent: function(student){
+			this.props.student.deleteStudent();
+		},
 		render: function() {
 			return (
-				<li>Name: <StudentNameForm name={this.props.student.name} nameChange={this.handleNameChange} /> Experience: {this.state.exp}  
+				<li>
+				<span onClick={this.handleDeleteStudent}>X</span>
+				<span>Name: <StudentNameForm name={this.props.student.name} nameChange={this.handleNameChange} /> Experience: {this.state.exp}</span>
 	        	<select class="exp" onChange={this.handleExpChange} value={this.state.exp}>	
 	        		<option value="change">Change</option>	
 	        	 	<option value="1">1</option>

@@ -184,6 +184,10 @@
 		Student.updateStudent(this, oldName);
 	}
 
+	Student.prototype.deleteStudent = function(){
+		Student.deleteStudents(this.name);
+	}
+
 	//fetch students from persistant storage
 	Student.getStudents = function(callback){
 		$.getJSON(apiUrl, function(data){
@@ -209,7 +213,9 @@
 		update('put', student, name);
 	}
 
-	Student.deleteStudent = function(student){
+	//If you pass in a student name it deletes that student, if you don't it deletes the collection
+	//probably needs a better name
+	Student.deleteStudents = function(student){
 		url = student ? apiUrl + student : apiUrl;
 
 		$.ajax({
