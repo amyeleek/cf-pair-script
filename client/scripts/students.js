@@ -151,6 +151,8 @@
 							  "driverCount": student.driverCount,
 							  "pairedWith": student.pairedWith}),
 		success: function(data, msg, xhr){
+			//I probably don't want to do this on update
+			//what did I do it for in the first place? It's clever
 			studentView.showTemplate('student', 'students', student);
 		  }
 		})
@@ -167,10 +169,17 @@
 	};
 
 	///put this on the prototype, add functions for updating name and pairedWith on the prototype too
-	Student.prototype.updateExp = function(val){
-		this.exp = val;
-		Student.updateStudent(this, this.name);	
+	//this used to be so clean *sob*
+	Student.updateExp = function(name, val){
+		index = findStudentByName(name)
+		students[index].exp = val;
+		Student.updateStudent(students[index], name);	
+	}
 
+	function findStudentByName(name){
+		return students.findIndex(function(student){
+			if(student.name == name) return student;
+		});
 	}
 
 	Student.prototype.updatePairedWith = function(paired){
