@@ -55,18 +55,18 @@
 	};
 
   //Takes an array. Returns an array with the same items in random order.
-	function randomizer(arr){
+  function randomizer(arr){
 		var current = arr.length,
 		    temp,
 		    random;
 		while (current != 0){
-      random = Math.floor(Math.random() * current);
-      current--;
-      temp = arr[current];
-      arr[current] = arr[random];
-      arr[random] = temp;
-    }
-    return arr;
+		  random = Math.floor(Math.random() * current);
+		  current--;
+		  temp = arr[current];
+		  arr[current] = arr[random];
+		  arr[random] = temp;
+		}
+	  	return arr;
   };
 
   function reRunCreate(){
@@ -136,7 +136,7 @@
 		});
 	};
 
-	var constructAjax = function(){
+	function constructAjax(){
 	  return function(type, student, name){
 		url = name ? apiUrl + name : apiUrl;
 

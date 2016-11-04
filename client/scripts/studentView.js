@@ -96,6 +96,7 @@
 
 	//react
 
+	//show only when student list is blank, automatically load the React when clicked
 	var PopulateButton = React.createClass({
 		render: function() {
 			return (
@@ -116,12 +117,14 @@
 			return (
 				<ul className="students">
 					{showStudents}
+					<li>
+						<RemoveStudents />	
+					</li>
 				</ul>
 			);
 		}
 	});
 
-	//Consider: Make updatable subcomponent pairedWith
 	//hide/show paired with
 	var ViewStudent = React.createClass({
 		getInitialState: function(){
@@ -145,7 +148,7 @@
 		render: function() {
 			return (
 				<li>
-				<span onClick={this.handleDeleteStudent}>X</span>
+				<span onClick={this.handleDeleteStudent}>X </span>
 				<span>Name: <StudentNameForm name={this.props.student.name} nameChange={this.handleNameChange} /> Experience: {this.state.exp}</span>
 	        	<select class="exp" onChange={this.handleExpChange} value={this.state.exp}>	
 	        		<option value="change">Change</option>	
@@ -154,6 +157,18 @@
 	        	 	<option value="3">3</option>
 	        	</select>
 	        	Driver count: {this.props.student.driverCount}, Previously paired with: <PairedWith pair={this.handlePairChange} pairedWith={this.props.student.pairedWith} /></li>);
+		}
+	});
+
+	//eventually: when clicked, clear the student list
+	var RemoveStudents = React.createClass({
+		handleDeleteStudents: function(){
+			Student.deleteStudents();
+		},
+		render: function() {
+			return (
+				<button onClick={this.handleDeleteStudents} title="Delete students from the database">Delete Students</button>
+			)
 		}
 	});
 
@@ -181,7 +196,6 @@
 		}
 	});
 
-	///
 	var PairedWith = React.createClass({
 		getInitialState: function(){
 			return(
