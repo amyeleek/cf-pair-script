@@ -22,7 +22,7 @@
             </tr>
       	</script>
       	<script id="student-template" type="text/x-handlebars-template">
-	        	<li data-name="{{name}}">Name: {{name}}, Experience: <span class="stuExp">{{exp}}</span>  
+	        	<li data-name="{{name}}">Name: <input type="text" value="{{name}}" />, Experience: <span class="stuExp">{{exp}}</span>  
 	        	<select class="exp">	
 	        		<option>Change</option>	
 	        	 	<option>1</option>
@@ -30,6 +30,7 @@
 	        	 	<option>3</option>
 	        	</select>
 	        	Driver count: {{driverCount}}, Previously paired with: {{pairedWith}}</li>
+            <input type="text" placeholder="Input new pair name" />
       	</script>
   		<section>
         <table id="results">
@@ -48,13 +49,10 @@
   			<div id="students">
   			</div>
   		</section>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.0.1/react.js"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.0.1/react-dom.js"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.6.16/browser.js"></script>
   		<script src="https://code.jquery.com/jquery-2.2.2.min.js"></script>
   		<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.js"></script>
   		<script src="/scripts/students.js"></script>
-  		<script type="text/babel" src="/scripts/studentView.js"></script>
+  		<script src="/scripts/studentView.js"></script>
   	</main>
   </body>
  </html>
