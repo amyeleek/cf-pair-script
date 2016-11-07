@@ -187,10 +187,10 @@
 		Student.updateStudent(this, this.name);
 	}
 
-	Student.prototype.updateName = function(name){
-		var oldName = this.name;
-		this.name = name;
-		Student.updateStudent(this, oldName);
+	Student.updateName = function(oldName, newName){
+		index = findStudentByName(oldName)
+		students[index].name = newName;
+		Student.updateStudent(students[index], oldName);
 	}
 
 	Student.prototype.deleteStudent = function(){

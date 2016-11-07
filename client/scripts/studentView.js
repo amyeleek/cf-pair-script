@@ -51,6 +51,16 @@
 		});
 	}
 
+	studentView.nameHandler = function(){
+		$('#students').on('focusout', '.nameField', function(e){
+			$newName = $(this).val();
+			$oldName = $(this).parent().data('name');
+			Student.updateName($oldName, $newName);
+
+			$(this).val($newName);
+		});
+	}
+
 	studentView.hidePopulate = function(){
 		if($('#students li') === []) $('#pop').hide();
 	}
@@ -58,6 +68,7 @@
 	studentView.init = function(){
 		studentView.buttonsHandler();
 		studentView.expHandler();
+		studentView.nameHandler();
 		studentView.populateStudents();
 	}
 
