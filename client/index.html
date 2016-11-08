@@ -22,15 +22,22 @@
             </tr>
       	</script>
       	<script id="student-template" type="text/x-handlebars-template">
-	        	<li data-name="{{name}}">Name: <input type="text" value="{{name}}" class="nameField" />, Experience: <span class="stuExp">{{exp}}</span>  
-	        	<select class="exp">	
-	        		<option>Change</option>	
-	        	 	<option>1</option>
-	        	 	<option>2</option>
-	        	 	<option>3</option>
-	        	</select>
-	        	Driver count: {{driverCount}}, Previously paired with: {{pairedWith}}</li>
-            <input type="text" placeholder="Input new pair name" />
+	        	<li data-name="{{name}}">
+              <span class="deleteStudent">X</span> Name: <input type="text" value="{{name}}" class="nameField" />, Experience: <span class="stuExp">{{exp}}</span>  
+	        	  <select class="exp">	
+	        	  	<option>Change</option>	
+	        	  	<option>1</option>
+	        	  	<option>2</option>
+	        	  	<option>3</option>
+	        	  </select>
+	        	  Driver count: {{driverCount}}, Previously paired with: 
+              <ul>
+                 {{#each pairedWith}}
+                    <li><span class="deletePair">X</span> <span>{{this}}</span></li>
+                 {{/each}}
+              </ul>
+              <input type="text" class="pairField" placeholder="Input new pair name" />
+            </li>
       	</script>
   		<section>
         <table id="results">

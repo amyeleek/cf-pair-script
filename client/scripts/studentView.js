@@ -52,7 +52,9 @@
 	}
 
 	studentView.nameHandler = function(){
-		$('#students').on('focusout', '.nameField', function(e){
+		$('#students').on('focusout keyup', '.nameField', function(e){
+			if(e.which != 13) return null;
+
 			$newName = $(this).val();
 			$oldName = $(this).parent().data('name');
 			Student.updateName($oldName, $newName);
@@ -60,6 +62,39 @@
 			$(this).val($newName);
 		});
 	}
+
+	studentView.newPairHandler = function(){
+		$('#students').on('focusout keyup', '.pairField', function(e){
+			if(e.which != 13) return null;
+
+			$paired = $(this).val();
+			$name = $(this).parent().data('name');
+			Student.addPairedWith($name, $paired);
+
+			$(this).siblings('ul').append("<li><span class=\"deletePair\">X</span> <span>"+ $paired +"</span></li>");
+			$(this).val('');
+		});
+	}	
+
+	studentView.deleteStudentHandler = function(){
+		$('#students').on('click', '.deleteStudent', function(e){
+			$name = $(this).parent().data('name');
+			Student.deleteStudent($name);
+
+			$(this).parent().remove();
+		});
+	}
+
+	studentView.deletePairHandler = function(){
+		$('#students').on('click', '.deletePair', function(e){
+			$name = $(this).parents('li[data-name]').data('name');
+			$paired = $(this).siblings('span').text();
+			Student.deletePairedWith($name, $paired);
+			
+			$(this).parent().remove();
+		});
+	}
+
 
 	studentView.hidePopulate = function(){
 		if($('#students li') === []) $('#pop').hide();
@@ -69,6 +104,9 @@
 		studentView.buttonsHandler();
 		studentView.expHandler();
 		studentView.nameHandler();
+		studentView.newPairHandler();
+		studentView.deleteStudentHandler();
+		studentView.deletePairHandler();
 		studentView.populateStudents();
 	}
 

@@ -182,9 +182,17 @@
 		});
 	}
 
-	Student.prototype.updatePairedWith = function(paired){
-		this.pairedWith = paired;
-		Student.updateStudent(this, this.name);
+	Student.addPairedWith = function(name, paired){
+		index = findStudentByName(name)
+		students[index].pairedWith.push(paired);
+		Student.updateStudent(students[index], name);
+	}
+
+	Student.deletePairedWith = function(name, paired){
+		index = findStudentByName(name)
+		pairIndex = students[index].pairedWith.indexOf(paired)
+		students[index].pairedWith.splice(pairIndex, 1);
+		Student.updateStudent(students[index], name);
 	}
 
 	Student.updateName = function(oldName, newName){
@@ -193,8 +201,8 @@
 		Student.updateStudent(students[index], oldName);
 	}
 
-	Student.prototype.deleteStudent = function(){
-		Student.deleteStudents(this.name);
+	Student.deleteStudent = function(name){
+		Student.deleteStudents(name);
 	}
 
 	//fetch students from persistant storage
