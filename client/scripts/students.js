@@ -7,8 +7,6 @@
 		student = $(this).text();
 		students.push({name: student, exp:2,"hasPairedWith":[]});
 	});
-
-	Need persistant storage on this app
 */
 
 	//full array of students.
@@ -57,18 +55,18 @@
 	};
 
   //Takes an array. Returns an array with the same items in random order.
-	function randomizer(arr){
+  function randomizer(arr){
 		var current = arr.length,
 		    temp,
 		    random;
 		while (current != 0){
-      random = Math.floor(Math.random() * current);
-      current--;
-      temp = arr[current];
-      arr[current] = arr[random];
-      arr[random] = temp;
-    }
-    return arr;
+		  random = Math.floor(Math.random() * current);
+		  current--;
+		  temp = arr[current];
+		  arr[current] = arr[random];
+		  arr[random] = temp;
+		}
+	  	return arr;
   };
 
   function reRunCreate(){
@@ -138,7 +136,7 @@
 		});
 	};
 
-	var constructAjax = function(){
+	function constructAjax(){
 	  return function(type, student, name){
 		url = name ? apiUrl + name : apiUrl;
 
@@ -153,7 +151,10 @@
 							  "driverCount": student.driverCount,
 							  "pairedWith": student.pairedWith}),
 		success: function(data, msg, xhr){
-			studentView.showTemplate('student', 'students', student);
+			//I probably don't want to do this on update
+			//what did I do it for in the first place? It's clever
+			//studentView.showTemplate('student', 'students', student);
+			console.log('foo');
 		  }
 		})
 	  }
@@ -167,6 +168,43 @@
   	 	  this[k] = args[k];
   		},this);
 	};
+
+	///put this on the prototype, add functions for updating name and pairedWith on the prototype too
+	//this used to be so clean *sob*
+	Student.updateExp = function(name, val){
+		index = findStudentByName(name)
+		students[index].exp = val;
+		Student.updateStudent(students[index], name);	
+	}
+
+	function findStudentByName(name){
+		return students.findIndex(function(student){
+			if(student.name == name) return student;
+		});
+	}
+
+	Student.addPairedWith = function(name, paired){
+		index = findStudentByName(name)
+		students[index].pairedWith.push(paired);
+		Student.updateStudent(students[index], name);
+	}
+
+	Student.deletePairedWith = function(name, paired){
+		index = findStudentByName(name)
+		pairIndex = students[index].pairedWith.indexOf(paired)
+		students[index].pairedWith.splice(pairIndex, 1);
+		Student.updateStudent(students[index], name);
+	}
+
+	Student.updateName = function(oldName, newName){
+		index = findStudentByName(oldName)
+		students[index].name = newName;
+		Student.updateStudent(students[index], oldName);
+	}
+
+	Student.deleteStudent = function(name){
+		Student.deleteStudents(name);
+	}
 
 	//fetch students from persistant storage
 	Student.getStudents = function(callback){
@@ -188,12 +226,14 @@
 		put('post', student);
 	}
 
-	Student.updateStudent = function(student){
+	Student.updateStudent = function(student, name){
 		var update = constructAjax();
-		update('put', student, student.name);
+		update('put', student, name);
 	}
 
-	Student.deleteStudent = function(student){
+	//If you pass in a student name it deletes that student, if you don't it deletes the collection
+	//probably needs a better name
+	Student.deleteStudents = function(student){
 		url = student ? apiUrl + student : apiUrl;
 
 		$.ajax({
@@ -206,7 +246,7 @@
 		var flat = flatten();
 		
 		flat.forEach(function(student){
-			Student.updateStudent(student);
+			Student.updateStudent(student, student.name);
 		})
 	}
 
@@ -288,19 +328,6 @@
 		//return;
 	};
 
-
-	Student.updateExp = function(name, val){
-		//refresh the students array
-		//Student.getStudents();
-
-		index = students.findIndex(function(student){
-			if(student.name == name) return student;
-		});
-
-		students[index].exp = val;
-		Student.updateStudent(students[index]);	
-
-	}
 
 	//iterate over the pairs array and update the pairedWith
 	Student.updatePairs = function(){
