@@ -153,7 +153,8 @@
 		success: function(data, msg, xhr){
 			//I probably don't want to do this on update
 			//what did I do it for in the first place? It's clever
-			studentView.showTemplate('student', 'students', student);
+			//studentView.showTemplate('student', 'students', student);
+			console.log('foo');
 		  }
 		})
 	  }
