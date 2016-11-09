@@ -14,10 +14,11 @@
   	<main>
   	    <script id="pair-template" type="text/x-handlebars-template">
   	   		<tr class="pair">
-	        	<td>{{driver}}</td>
-	            <td>{{navigator}}</td>
+            <td class="removePair">X</td>
+	        	<td><input type="text" value="{{driver}}" /></td>
+	          <td><input type="text" value="{{navigator}}" /></td>
 	            {{#if navigator2}}
-	            	<td>{{navigator2}}</td>
+	            	<td><input type="text" value="{{navigator2}}" /></td>
 	            {{/if}}
             </tr>
       	</script>
@@ -42,6 +43,7 @@
   		<section>
         <table id="results">
         	<thead>
+              <th>Remove</th>
         	    <th>Driver</th>
         	    <th>Navigator</th>
         	    <th>Navigator 2</th>

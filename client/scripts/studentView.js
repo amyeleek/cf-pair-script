@@ -18,11 +18,6 @@
 		})
 	}
 
-	//Consider: Make two buttons. One to store the students (with current paired with),
-	// another to run the algorithm again without updating the paired with array
-
-	//click button event for loading new pairs
-	//clears out old pairs if they're there
 	studentView.buttonsHandler = function(){
 		$('#create').on('click', function(e){
 			studentView.clearData('.pair');
@@ -42,7 +37,7 @@
 
 		$('#clear').on('click', function(e){
 			Student.deleteStudents();
-			$("#students").children().remove();
+			studentView.clearData('#students li');
 		});
 
 		$('#showAdd').on('click', function(e){
@@ -112,7 +107,7 @@
 		});
 	}
 
-	studentView.deletePairHandler = function(){
+	studentView.deletePairedHandler = function(){
 		$('#students').on('click', '.deletePair', function(e){
 			
 			var $this = $(this),
@@ -124,9 +119,22 @@
 		});
 	}
 
+	studentView.deletePairHandler = function(){
+		$('#results').on('click', '.removePair', function(e){
+			var $driverName = $(this).siblings('td').children('input').val(),
+				pair = pairs.findIndex(function(pair){
+					if(pair[0].name === $driverName) return pair;
+				});
+
+			pairs.splice(pair, 1);
+
+			$(this).parent().remove();
+		});
+
+	}
 
 	studentView.hidePopulate = function(){
-		if($('#students li') === []) $('#pop').hide();
+		if($('#students li') != []) $('#pop').hide();
 	}
 
 	studentView.init = function(){
@@ -135,6 +143,7 @@
 		studentView.nameHandler();
 		studentView.newPairHandler();
 		studentView.deleteStudentHandler();
+		studentView.deletePairedHandler();
 		studentView.deletePairHandler();
 		studentView.populateStudents();
 	}
