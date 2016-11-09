@@ -255,6 +255,7 @@
 			data.forEach(function(student){
 				Student.putStudent(student);
 			});
+			studentView.populateStudents();
 		});
 	}
 

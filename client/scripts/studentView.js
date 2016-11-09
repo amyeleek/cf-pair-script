@@ -39,6 +39,11 @@
 		$('#pop').on('click', function(e){
 			Student.autoPutStudents();
 		});
+
+		$('#clear').on('click', function(e){
+			Student.deleteStudents();
+			$("#students").children().remove();
+		});
 	}
 
 	studentView.expHandler = function(){
