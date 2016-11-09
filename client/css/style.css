@@ -41,3 +41,7 @@ button:hover {
 #students li{
   padding: 2%;
 }
+
+#addStudent{
+  display: none;
+}

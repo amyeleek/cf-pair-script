@@ -44,6 +44,21 @@
 			Student.deleteStudents();
 			$("#students").children().remove();
 		});
+
+		$('#showAdd').on('click', function(e){
+			$('#addStudent').show();
+		});
+
+		$('#add').on('click', function(e){
+			var student = {name: $('#addStudent input').val(),
+					   exp: $('#addStudent select').val(),
+					   driver: false,
+					   driverCount: 0,
+					   pairedWith: []}
+			Student.putStudent(student);
+			studentView.showTemplate('student', 'students', student);
+			$('#addStudent').hide();
+		});
 	}
 
 	studentView.expHandler = function(){
