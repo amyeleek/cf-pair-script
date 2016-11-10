@@ -160,6 +160,23 @@
 	  }
 	}
 
+	//split these off into some helper object or something like Bongo suggested
+	Student.findStudent = function(item, key){
+		return students.findIndex(function(student){
+			if(student[key] === item) return student;
+		});
+	}
+
+	Student.findPair = function(item, key){
+		return pairs.findIndex(function(pair){
+			//I want this to be cleaner, but since we're mostly comparing strings I don't know if that can work
+			if(pair[0][key] === item){
+			 	return pair;
+			}else if(pair[1][key] === item){
+				return pair;
+			}
+		});
+	}
 
 	//flatten the pairs array and store it, so we keep the pairedWith values
 
@@ -172,32 +189,26 @@
 	///put this on the prototype, add functions for updating name and pairedWith on the prototype too
 	//this used to be so clean *sob*
 	Student.updateExp = function(name, val){
-		index = findStudentByName(name)
+		index = findStudent(name, 'name');
 		students[index].exp = val;
 		Student.updateStudent(students[index], name);	
 	}
 
-	function findStudentByName(name){
-		return students.findIndex(function(student){
-			if(student.name == name) return student;
-		});
-	}
-
 	Student.addPairedWith = function(name, paired){
-		index = findStudentByName(name)
+		index = findStudent(name, 'name');
 		students[index].pairedWith.push(paired);
 		Student.updateStudent(students[index], name);
 	}
 
 	Student.deletePairedWith = function(name, paired){
-		index = findStudentByName(name)
+		index = findStudent(name, 'name');
 		pairIndex = students[index].pairedWith.indexOf(paired)
 		students[index].pairedWith.splice(pairIndex, 1);
 		Student.updateStudent(students[index], name);
 	}
 
 	Student.updateName = function(oldName, newName){
-		index = findStudentByName(oldName)
+		index = findStudent(name, 'name');
 		students[index].name = newName;
 		Student.updateStudent(students[index], oldName);
 	}
@@ -255,6 +266,7 @@
 			data.forEach(function(student){
 				Student.putStudent(student);
 			});
+			studentView.populateStudents();
 		});
 	}
 

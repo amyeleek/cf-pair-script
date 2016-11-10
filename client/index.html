@@ -14,8 +14,9 @@
   	<main>
   	    <script id="pair-template" type="text/x-handlebars-template">
   	   		<tr class="pair">
+            <td class="removePair">X</td>
 	        	<td>{{driver}}</td>
-	            <td>{{navigator}}</td>
+	          <td>{{navigator}}</td>
 	            {{#if navigator2}}
 	            	<td>{{navigator2}}</td>
 	            {{/if}}
@@ -42,6 +43,7 @@
   		<section>
         <table id="results">
         	<thead>
+              <th>Remove</th>
         	    <th>Driver</th>
         	    <th>Navigator</th>
         	    <th>Navigator 2</th>
@@ -52,7 +54,22 @@
   		</section>
   		<section>
   			<h4>Students</h4>
-<!--         <button id="pop" title="Load students from JSON file and put them in the DB">Populate Students</button> -->
+        <button id="pop" title="Load students from JSON file and put them in the DB">Populate Students</button>
+        <button id="showAdd">Add Student</button>
+        <button id="clear">Delete all Students</button>
+        <div>
+        <!--Honestly, just edit the JSON. But this is here just in case. -->
+          <form id="addStudent">
+            Name: <input type="text" />
+            Experience: <select class="exp">  
+                          <option>Change</option> 
+                          <option>1</option>
+                          <option>2</option>
+                          <option>3</option>
+                        </select>
+            <button id="add">Add</button>  
+          </form>
+        </div>
   			<div id="students">
   			</div>
   		</section>

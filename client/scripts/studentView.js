@@ -18,11 +18,6 @@
 		})
 	}
 
-	//Consider: Make two buttons. One to store the students (with current paired with),
-	// another to run the algorithm again without updating the paired with array
-
-	//click button event for loading new pairs
-	//clears out old pairs if they're there
 	studentView.buttonsHandler = function(){
 		$('#create').on('click', function(e){
 			studentView.clearData('.pair');
@@ -38,6 +33,26 @@
 
 		$('#pop').on('click', function(e){
 			Student.autoPutStudents();
+		});
+
+		$('#clear').on('click', function(e){
+			Student.deleteStudents();
+			studentView.clearData('#students li');
+		});
+
+		$('#showAdd').on('click', function(e){
+			$('#addStudent').show();
+		});
+
+		$('#add').on('click', function(e){
+			var student = {name: $('#addStudent input').val(),
+					   exp: $('#addStudent select').val(),
+					   driver: false,
+					   driverCount: 0,
+					   pairedWith: []}
+			Student.putStudent(student);
+			studentView.showTemplate('student', 'students', student);
+			$('#addStudent').hide();
 		});
 	}
 
@@ -92,7 +107,7 @@
 		});
 	}
 
-	studentView.deletePairHandler = function(){
+	studentView.deletePairedHandler = function(){
 		$('#students').on('click', '.deletePair', function(e){
 			
 			var $this = $(this),
@@ -104,9 +119,32 @@
 		});
 	}
 
+	//this doesn't work and would be a huge pain to make work, is it really worth it?
+	studentView.editPairHandler = function(){
+		$('#results').on('focusout keyup', 'input', function(e){
+			if(e.which != 13) return null;
+
+			var $newStudentName =  $(this).val(),
+				$pairedName = $(this).parent().siblings('td').children('input').val(),
+				pair = Student.findPair($pairedName, 'name');
+
+
+		});
+	}
+
+	studentView.deletePairHandler = function(){
+		$('#results').on('click', '.removePair', function(e){
+			var $driverName = $(this).siblings('td').children('input').val(),
+				pair = Student.findPair($driverName, 'name');
+
+			pairs.splice(pair, 1);
+
+			$(this).parent().remove();
+		});
+	}
 
 	studentView.hidePopulate = function(){
-		if($('#students li') === []) $('#pop').hide();
+		if($('#students li') != []) $('#pop').hide();
 	}
 
 	studentView.init = function(){
@@ -115,8 +153,10 @@
 		studentView.nameHandler();
 		studentView.newPairHandler();
 		studentView.deleteStudentHandler();
+		studentView.deletePairedHandler();
 		studentView.deletePairHandler();
 		studentView.populateStudents();
+		//studentView.editPairHandler();
 	}
 
 	///decouple pair-making from the view
