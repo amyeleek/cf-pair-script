@@ -119,18 +119,28 @@
 		});
 	}
 
+	//this doesn't work and would be a huge pain to make work, is it really worth it?
+	studentView.editPairHandler = function(){
+		$('#results').on('focusout keyup', 'input', function(e){
+			if(e.which != 13) return null;
+
+			var $newStudentName =  $(this).val(),
+				$pairedName = $(this).parent().siblings('td').children('input').val(),
+				pair = Student.findPair($pairedName, 'name');
+
+
+		});
+	}
+
 	studentView.deletePairHandler = function(){
 		$('#results').on('click', '.removePair', function(e){
 			var $driverName = $(this).siblings('td').children('input').val(),
-				pair = pairs.findIndex(function(pair){
-					if(pair[0].name === $driverName) return pair;
-				});
+				pair = Student.findPair($driverName, 'name');
 
 			pairs.splice(pair, 1);
 
 			$(this).parent().remove();
 		});
-
 	}
 
 	studentView.hidePopulate = function(){
@@ -146,6 +156,7 @@
 		studentView.deletePairedHandler();
 		studentView.deletePairHandler();
 		studentView.populateStudents();
+		//studentView.editPairHandler();
 	}
 
 	///decouple pair-making from the view
